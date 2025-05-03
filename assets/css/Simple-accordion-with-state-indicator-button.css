@@ -1,0 +1,25 @@
+.botao-accordion {
+  width: 100%;
+  display: inline-block;
+  padding: 12px 35px 12px 12px;
+  position: relative;
+}
+
+.accordion-com-seta-indicadora .card-header {
+  padding: 0;
+}
+
+.botao-accordion[aria-expanded=false] > .fa-arrow-alt-circle-down {
+  display: none;
+}
+
+.botao-accordion .fa-arrow-alt-circle-down {
+  position: absolute;
+  right: 12px;
+}
+
+.botao-accordion .fa-arrow-alt-circle-right {
+  position: absolute;
+  right: 12px;
+}
+

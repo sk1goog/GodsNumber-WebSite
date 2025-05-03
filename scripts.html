@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="de">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        <title>Scripts</title>
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/css/Footer-Multi-Column-icons.css">
+        <link rel="stylesheet" href="assets/css/Simple-accordion-with-state-indicator-button.css">
+        <link rel="stylesheet" href="assets/css/styles.css">
+        <link rel="stylesheet" href="assets/css/textarea.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+        <link rel="icon" href="favicon.png" type="image/png">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    </head>
+    <body class="flex-column min-vh-100" style="display: flex;">
+        <nav class="navbar navbar-expand-md my-navbar-bg mb-0 pb-0">
+            <div class="container-fluid"><a href="index.html"> <img src="assets/img/GodCubeLogo.png" alt="GodCube Logo" class="pb-0" style="height: 85px; width: 85px;"> </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navcol-2">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Welcome</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link active" href="#">Scripts</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="apps.html">Apps</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="algs.html">Algs</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="maths.html">Maths</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="about.html">About</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container flex-fill py-5">
+            <h2>Scripts</h2>
+            <p>
+            Hier dreht sich alles um Code – genauer gesagt: um Python-Skripte, die versuchen, dem Rubik’s Cube algorithmisch beizukommen.
+            Vom ersten Solver-Ansatz bis zu immer raffinierteren Strategien zeigt diese Seite den Weg der Optimierung:
+            effizientere Datenstrukturen, schlauere Heuristiken, gezieltere Suche. Jedes Script ist ein Experiment,
+            jeder Durchlauf ein Schritt näher an der perfekten Lösung. Langfristiges Ziel: Gottes Zahl nicht nur verstehen,
+            sondern sie programmatisch erreichen – oder ihr zumindest gefährlich nahekommen. </p>
+            <h2>Annäherung an God’s Number</h2>
+            <p>
+            Diese Grafik visualisiert zentrale statistische Kennzahlen zur Anzahl der Züge, die von verschiedenen Versionen
+            meiner Rubik’s-Cube-Skripte zur Lösung benötigt wurden. Dargestellt sind Minimum, Maximum, Durchschnitt, Median,
+            Standardabweichung und Varianz – jeweils bezogen auf definierte Testmengen. Die Datenbasis wird fortlaufend erweitert:
+            Jede neue Skriptversion ergänzt den Verlauf um weitere Messpunkte. Die Darstellung dient der Vergleichbarkeit der
+            Skriptentwicklungen im Zeitverlauf. </p>
+            <img src="assets/img/statistics_plot.png" alt="Statistik" class="img-fluid w-100 mb-4" width="696" height="1044">
+            <h2>Skriptübersicht – Solver Skripte</h2>
+            <p>
+            Hier findest Du alle bisher von mir entwickelten Skripte rund um die Lösung des Rubik’s Cube – jeweils mit einer kurzen
+            Beschreibung, was das Skript macht, welche Strategie es verfolgt und wo es im Gesamtkontext steht. Von hier aus kannst Du
+            direkt zu den Detailseiten springen, auf denen Aufbau, Funktionsweise und Besonderheiten ausführlich dokumentiert sind. </p>
+            <div id="accordion-1" class="accordion mb-5" role="tablist">
+                <!-- Skript 01 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-1" role="tab"> <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#item-1" aria-expanded="false" aria-controls="item-1">
+                            Skript 01 – Random Solve – Mein Einstieg ins Cube-Coden
+</button> </h2>
+                    <div id="item-1" class="accordion-collapse collapse" role="tabpanel" aria-labelledby="heading-1" data-bs-parent="#accordion-1">
+                        <div class="accordion-body">
+                            <p class="mb-0">
+                            Mein Einstieg in die Welt der Rubik’s-Cube-Algorithmen begann ganz simpel –
+                            mit einem selbstgeschriebenen Skript. Die Grundidee: zufällige Zugfolgen ausprobieren
+                            und prüfen, ob dadurch mehr Steine korrekt positioniert werden. Falls ja, wird der Versuch
+                            beibehalten. Falls nicht, geht’s weiter mit der nächsten Sequenz. </p><a class="cube-link" href="scripts_01.html">Mehr dazu &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Skript 02 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-2" role="tab"> <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#item-2" aria-expanded="false" aria-controls="item-2">
+                            Skript 02 – Learning Moves – Ein lernfähiger Rubik’s-Cube-Solver mit Memory-Effekt
+</button> </h2>
+                    <div id="item-2" class="accordion-collapse collapse" role="tabpanel" aria-labelledby="heading-2" data-bs-parent="#accordion-1">
+                        <div class="accordion-body">
+                            <p class="mb-0">
+                            Learning Moves kombiniert zufällige Lösungsversuche mit einem einfachen Lernmechanismus:
+                            Immer wenn eine Zugfolge den Cube verbessert, wird sie zusammen mit der Ausgangsposition gespeichert.
+                            Bei späteren Durchläufen prüft das Skript zuerst, ob für die aktuelle Position bereits eine erfolgreiche
+                            Zugfolge bekannt ist – und nutzt sie direkt. So entsteht Schritt für Schritt eine Sammlung bewährter Teilzüge,
+                            die gezielt wiederverwendet werden. </p><a class="cube-link" href="scripts_02.html">Mehr dazu &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Skript 03 -->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-3" role="tab"> <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#item-3" aria-expanded="false" aria-controls="item-3">
+                            Skript 03 – Solution Recall – Zugfolgenkombination als Schlüssel zur Cube-Optimierung
+</button> </h2>
+                    <div id="item-3" class="accordion-collapse collapse" role="tabpanel" aria-labelledby="heading-3" data-bs-parent="#accordion-1">
+                        <div class="accordion-body">
+                            <p class="mb-0">
+                            Das Skript „Solution Recall“ erweitert den bisherigen Ansatz, indem es nicht nur einzelne, gelernte Züge verwendet,
+                            sondern diese zu verschiedenen Zugfolgenkombinationen zusammenfügt. Anschließend werden diese Kombinationen
+                            zufallsbasiert durchprobiert, um schrittweise den optimalen Lösungsweg für den Rubik’s Cube zu finden. </p><a class="cube-link" href="scripts_03.html">Mehr dazu &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h2>Skriptübersicht – Sonstige Skripte</h2>
+            <p>
+            In diesem Abschnitt stelle ich Skripte vor, die nicht darauf ausgelegt sind, die God’s Number des Rubik’s Cube zu erreichen
+            oder jede Stellung besonders effizient zu lösen. Vielmehr handelt es sich um Simulationen,
+            Visualisierungen und andere kreative Tools rund um den Rubik’s Cube, die abseits statistischer Optimierungsansätze
+            spannende Einblicke bieten. </p>
+            <div id="accordion-2" class="accordion mb-5" role="tablist">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-4" role="tab"> <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#item-4" aria-expanded="false" aria-controls="item-4">
+                            Simple Rubik Simulator
+</button> </h2>
+                    <div id="item-4" class="accordion-collapse collapse" role="tabpanel" aria-labelledby="heading-4" data-bs-parent="#accordion-2">
+                        <div class="accordion-body">
+                            <p class="mb-0">
+                            Der Simulator zeigt einen virtuellen Rubik’s Cube im gelösten Zustand und erlaubt es, beliebige
+                            Zugfolgen in Standardnotation einzugeben. Anschließend animiert er die eingegebenen Zugfolgen flüssig
+                            in einer interaktiven 3D-Darstellung. </p><a class="cube-link" href="scripts_a_01.html">Mehr dazu &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading-5" role="tab"> <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#item-5" aria-expanded="false" aria-controls="item-5">
+                            Cube Setup
+</button> </h2>
+                    <div id="item-5" class="accordion-collapse collapse" role="tabpanel" aria-labelledby="heading-5" data-bs-parent="#accordion-2">
+                        <div class="accordion-body">
+                            <p class="mb-0">
+                           Das „Cube Setup“-Tool ermöglicht die freie Vergabe von Farben an jedem einzelnen Sticker eines Rubik’s Cube und erzeugt daraus automatisch den passenden Facelet-String. Über eine Farbauswahlleiste wird zunächst eine der sechs Flächen (U, L, F, R, B, D) bestimmt. Im anschließenden interaktiven Netz kann per Mausklick oder Tastendruck jedes Facelet mit der gewählten Fläche belegt werden. Die Plausibilitätsprüfung stellt sicher, dass jede der sechs Farben genau neunmal verwendet wird. Nach erfolgreicher Überprüfung erzeugt ein Klick auf „Start“ zwei Ausgaben: den reinen Faces-String mit den Flächenbezeichnungen sowie den Colors-String mit den entsprechenden Farbkürzeln. </p><a class="cube-link" href="scripts_a_02.html">Mehr dazu &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="text-center py-4 my-navbar-bg">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-12 col-lg-6 text-center text-lg-start mb-3 mb-lg-0">
+                        <p class="text-muted mb-0">Copyright © GodsNumber.de</p>
+                    </div>
+                    <div class="col-12 col-lg-6 text-center text-lg-end">
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item"><a class="link-secondary" href="impressum.html">Impressum Datenschutz</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    </body>
+</html>

@@ -1,0 +1,141 @@
+/* Globale Hintergrund-Farbe für alle Seiten */
+body {
+    background-color: #ffffff;
+
+    /* oder #f0f0f0 – je nach Wunsch */
+}
+
+body {
+    background-color: hwb(210 97% 2%);
+}
+
+.my-navbar-bg {
+    background-color: #e0e0e0;
+}
+
+img {
+    width: 300px;
+    height: auto;
+}
+
+.nav-link {
+    position: relative;
+    color: rgb(0,0,0);
+    transition: color 0.3s ease;
+}
+
+.brand-bg-img {
+    position: absolute;
+    top: -50%;
+    left: 0%;
+    height: 250%;
+    width: auto;
+    opacity: 0.2;
+    z-index: 0;
+}
+
+.navbar-brand-text {
+    position: relative;
+    z-index: 1;
+    color: rgba(0,0,0, 0.8);
+
+    /* font-weight: bold; */
+    /* font-size: 1.5rem; */
+}
+
+.brand-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand-link {
+    position: relative;
+    z-index: 1;
+    text-decoration: none;
+    color: rgba(0,0,0,0.8);
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.big-image {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.accordion .accordion-item .accordion-button:not(.collapsed) {
+    background-color: #e0e0e0;
+}
+
+.link-unstyled {
+    text-decoration: none;
+    color: inherit !important;
+    display: block;
+}
+
+.nav-arrow {
+    font-size: 0.9rem;
+    text-decoration: none;
+    color: var(--bs-gray-500);
+    transition: color 0.2s ease;
+}
+
+.nav-arrow:hover {
+    color: #000;
+}
+
+.nav-nav {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.nav-link {
+    color: #333;
+    font-weight: normal;
+    text-decoration: none;
+    border-radius: 0.3em;
+    padding: 0.1em 0.4em;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-link:hover {
+    background-color: #ced4da;
+}
+
+.nav-link.active {
+    background-color: transparent;
+    color: #000;
+}
+
+.cube-link {
+    display: inline-block;
+
+    /* wichtig: NICHT block-level */
+    color: var(--bs-secondary);
+    text-decoration: none;
+    border-radius: 0.3em;
+    padding: 0.1em 0.4em;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.cube-link:hover {
+    background-color: #ced4da;
+}
+
+/* Button-Rand und Textfarbe im Normalzustand */
+.my-start-btn {
+    border-color: #ced4da !important;
+
+    /* Bootstrap-Form-Control-Rand */
+    color: var(--bs-secondary) !important;
+}
+
+/* Start-Button Hover */
+.my-start-btn:hover,
+.my-start-btn:focus {
+    background-color: #ced4da !important;
+    color: var(--bs-secondary) !important;
+
+    /* Textfarbe gleich lassen */
+}

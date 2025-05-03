@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="de">
+    <head>
+        <title>RandomSolve – Rubik's Cube mit Zufall lösen</title>
+        <meta name="description" content="RandomSolve ist ein Python-Skript zur explorativen Lösung des Rubik’s Cube mit zufällig generierten Zugfolgen und Heuristiken.">
+        <meta name="keywords" content="Rubik's Cube, Python Solver, RandomSolve, Cube Skript, Cube Programmierung, Rubik's Cube Projekt, Heuristik Solver, AI Cube, Gotteszahl">
+        <link rel="canonical" href="https://www.godsnumber.de/scripts_01.html">
+        <meta property="og:title" content="RandomSolve – Rubik's Cube mit Zufall lösen">
+        <meta property="og:description" content="Mein erster selbstgebauter Cube-Solver: keine Libraries, nur Logik, Zufall & Leidenschaft.">
+        <meta property="og:image" content="https://www.godsnumber.de/assets/img/Scripts/Scripts_01-Lösung.png">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/css/Footer-Multi-Column-icons.css">
+        <link rel="stylesheet" href="assets/css/Simple-accordion-with-state-indicator-button.css">
+        <link rel="stylesheet" href="assets/css/styles.css">
+        <link rel="stylesheet" href="assets/css/textarea.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+        <link rel="icon" href="favicon.png" type="image/png">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    </head>
+    <body class="flex-column min-vh-100" style="display: flex;">
+        <nav class="navbar navbar-expand-md my-navbar-bg mb- mb-0 pb-0">
+            <div class="container-fluid"><a href="index.html"><img src="assets/img/GodCubeLogo.png" style="height: 85px;width: 85px;" class="pb-0"></a>
+                <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navcol-2">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Welcome</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="scripts.html">Scripts</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="apps.html">Apps</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="algs.html">Algs</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="maths.html">Maths</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" href="about.html">About</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container flex-fill py-5">
+            <h2>Random Solve&nbsp;– Mein Einstieg ins Cube-Coden</h2>
+            <p>Bei RandomSolve ging es mir darum, einmal ganz bewusst einen eigenen Weg zu gehen. Statt nach bestehenden Lösungen zu suchen oder mir anzuschauen, wie andere das Problem angehen, wollte ich herausfinden, wie man das Ganze selbst denken und umsetzen kann – von der Würfelgeometrie bis zur Programmstruktur. Keine fertigen (Cube)-Bibliotheken, keine Tutorials – einfach nur die Frage: <em>Wie könnte ein Würfelprogramm funktionieren, das sich Schritt für Schritt einer Lösung nähert?</em></p>
+            <p>Der Ansatz: Zufällig generierte Zugfolgen, kombiniert mit einer einfachen Bewertungsstrategie – verbessert sich der Würfelzustand (mehr korrekt platzierte Steine), wird die neue Position übernommen. Wenn nicht, geht’s weiter mit neuen Versuchen. Durch Hashing vermeidet das Skript doppelte Zustände, über mehrere CPU-Kerne werden Kandidaten parallel ausprobiert. Parameter, Startzustand und Move-Mappings kommen aus externen Dateien, was den Ablauf flexibel und nachvollziehbar macht.</p>
+            <p>Natürlich habe ich beim Coden selbst hin und wieder Unterstützung genutzt – insbesondere bei technischen Details oder bei strukturellen Fragen. Aber die Grundidee und der Algorithmus sind in einem eigenen Denkprozess entstanden, ganz ohne Blick nach außen.</p>
+            <p>RandomSolve ist kein High-End-Solver, sondern ein kleines Experiment in Eigenregie – mit dem Ziel, ein komplexes Problem auf eigene Weise anzugehen und dabei ein tieferes Verständnis für die Struktur und Dynamik des Cubes zu gewinnen.</p>
+            <hr>
+            <h2>Skript Beschreibung</h2>
+            <p>Dieses Python-Skript dient der automatisierten Suche nach Zugfolgen zur Verbesserung einer gegebenen Rubik’s-Cube-Konfiguration – konkret: zur schrittweisen Optimierung korrekt platzierter Steine auf verschiedenen Schwierigkeitsstufen (Level E1, E2, E3). Es handelt sich nicht um einen klassischen Cube-Solver, sondern um ein exploratives Optimierungstool mit lernfähigem Heuristik-System.</p>
+            <p>Das Skript lädt zu Beginn Konfigurationsparameter aus einer CSV-Datei, wählt zufällig ein Parameter-Set und verarbeitet dann in mehreren „Runs“ die Ausgangsstellung eines Würfels aus einer zweiten CSV-Datei. Dabei werden parallelisierte Suchvorgänge durchgeführt, um über zufällige, gezielt gesteuerte Move-Sequenzen Zustände mit einer höheren Anzahl korrekt platzierter Steine zu finden.</p>
+            <p>Die wichtigsten Bestandteile im Überblick:</p>
+            <h2>Parameterverwaltung &amp; Vorbereitung</h2>
+            <p>Die Datei parameter_csv-Parameter.csv liefert für jeden Run ein zufälliges Set von Parametern (z. B. maximale Iterationen, Zielanzahl korrekt platzierter Steine, erlaubte Zuglängen etc.). Die Ausgangsposition wird aus csv_export-StartPos.csv geladen.<br>Die Bewegungstransformationen (Mapping von Positionen bei Zügen) kommen aus mappings.json.</p>
+            <h5>Zieldefinitionen</h5>
+            <p>Es gibt drei Levels von Zielstücken (E1, E2, E3), die jeweils aus definierten Stein-Positionen und erwarteten Farbzuordnungen bestehen. Ziel ist es, möglichst viele dieser Stücke korrekt zu positionieren.</p>
+            <h5>Zugauswahl &amp; Optimierung</h5>
+            <p>Das Skript generiert zufällige, aber durch inverse Züge und Variabilitätsparameter gesteuerte Move-Sequenzen. Parallelisierte Worker suchen unabhängig voneinander nach Verbesserungen (mehr korrekt platzierte Steine). Verbesserungen werden anhand von Hashes des Zustands erkannt und nur dann geloggt, wenn sie neu sind.</p>
+            <h5>Lernkomponente &amp; Logging</h5>
+            <p>Bereits „gesehene“ Zustände werden über kanonische Hashes erkannt (Rotationen berücksichtigt). Verbesserungen werden in Improvements.csv gespeichert, inklusive Hash, Move-Sequenz, Zuwachs an korrekten Positionen etc. Ergebnisse jedes Runs landen zusätzlich in Results.csv sowie in einer Run-spezifischen Logdatei.</p>
+            <h5>Technische Features</h5>
+            <p>- Multi-Processing via concurrent.futures.ProcessPoolExecutor<br>- Hash-basierte Erkennung bereits gelernter Zustände<br>- Mehrstufiges Zielsystem (Level E1 bis E3) mit iterativer Verfeinerung<br>- Dynamische Anpassung der Zuglänge bei Stagnation (wenn keine Verbesserung erkannt wurde)<br>- Lesbare Visualisierung des Cube-Zustands im ASCII-Format</p>
+            <hr>
+            <h2>Ergebnisse</h2>
+            <p>Dieses Skript war für mich ein kleiner persönlicher Meilenstein – so eine Art Hello Rubik-Moment. Es war spannend zu erleben, wie sich aus ein paar Überlegungen auf dem Papier ein funktionierender Code entwickeln lässt. Und das ganz ohne von Anfang an deterministische Algorithmen vorzugeben. Stattdessen habe ich versucht, das Problem über die Positionen der Steine zu greifen und in Python einen Weg zu finden, mit dem sich Züge systematisch anwenden und bewerten lassen.</p>
+            <p>Im Zentrum stand die Idee, nicht blind durchzuprobieren, sondern ein Gefühl für die Struktur der Lösung zu entwickeln – wie man durch geeignete Kombinationen von Zügen dem Zielzustand näherkommen kann. Dabei habe ich keinen fixen Lösungsweg implementiert, sondern eher einen Ansatz verfolgt, bei dem sich im Laufe der Zeit ein Algorithmus herauskristallisiert hat.</p>
+            <p>Das Skript lief über viele Stunden. Irgendwann hatte ich das Gefühl, dass ich der Lösung langsam näherkomme. Ich habe dann begonnen, Wahrscheinlichkeiten abzuschätzen – wie oft ein bestimmter Zustand auftritt, wie weit einzelne Konfigurationen noch vom Ziel entfernt sind, und ob sich daraus etwas ableiten lässt.</p>
+            <p>Und dann war plötzlich eine vollständige Lösung dabei. Kurz darauf noch eine. An dem Punkt war für mich klar: Das Skript erfüllt seinen Zweck. Mehr musste es erstmal gar nicht leisten.</p>
+            <img src="assets/img/Scripts/Scripts_01-Lösung.png" width="696" height="1044" style="margin-bottom: 25px;" class="<img src=&quot;statistics_plot.png&quot; class=&quot;img-fluid w-100 mb-4&quot; alt=&quot;Statistik&quot; />">
+            <p>99 Züge in meiner Notation – nach HTM wären das schlanke 83. Noch kein God’s Number, aber wir nähern uns dem heiligen Gral.</p>
+            <hr>
+            <h2>Ressourcen</h2>
+            <h5>Notwendig für die Skriptausführung</h5>
+            <p>- Skript_01: <em>RandomSolve.py</em><br>- Parameterdatei:&nbsp;<em>parameter_csv-Parameter.csv</em><br>- Mappingdatei der Züge:&nbsp;<em>mappings.json</em><br>- Importdatei mit Startposition:&nbsp;<em>csv_export-StartPos.csv</em></p>
+            <h5>Optional</h5>
+            <p>- Skript zur Erstellung Startposition:&nbsp;<em>CreateStartPosition.py</em><br>- Testskript zur Verifikation der Lösung:&nbsp;<em>TestMoves.py</em></p>
+            <p>&nbsp;<a class="cube-link" href="https://github.com/sk1goog/01_RandomSolve" target="_blank">&nbsp;Download on Github&nbsp;<i class="fab fa-github"></i></a></p>
+            <hr>
+            <div></div>
+            <div class="row" style="margin-top: 30px;">
+                <div class="col">
+                    <div></div>
+                </div>
+                <div class="col">
+                    <div class="text-end"><a class="cube-link" href="scripts_02.html">Skript 2&nbsp;Learning Moves →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="text-center py-4 my-navbar-bg">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-12 col-lg-6 text-center text-lg-start mb-3 mb-lg-0">
+                        <p class="text-muted mb-0">Copyright&nbsp;© GodsNumber.de</p>
+                    </div>
+                    <div class="col-12 col-lg-6 text-center text-lg-end">
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item"><a class="cube-link" href="impressum.html">Impressum Datenschutz</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    </body>
+</html>
