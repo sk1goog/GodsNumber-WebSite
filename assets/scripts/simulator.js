@@ -27,7 +27,7 @@
   const cubeGroup = new THREE.Group();
   scene.add(cubeGroup);
 
-  const colors = { U: 0xffff00, D: 0xffffff, F: 0x00ff00, B: 0x0000ff, R: 0xff0000, L: 0xffa500 };
+  const colors = { U: 0xffffff, D: 0xffff00, F: 0x00ff00, B: 0x0000ff, R: 0xff0000, L: 0xffa500 };
   const cubies = [];
   const size = 1, gap = 0.05;
   // Erzeuge alle kleinen Würfel
@@ -41,7 +41,7 @@
                   ['F', z === 1], ['B', z === -1]
               ];
               const mats = faces.map(([f, cond]) =>
-                  new THREE.MeshLambertMaterial({ color: cond ? colors[f] : 0x000000 })
+                  new THREE.MeshBasicMaterial({ color: cond ? colors[f] : 0x000000 })
               );
               const cubie = new THREE.Mesh(geom, mats);
               cubie.position.set(
