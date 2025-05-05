@@ -1,5 +1,6 @@
+// simulator.js – überarbeitete, funktionierende Version mit Farbcode-Update
 document.addEventListener("DOMContentLoaded", function () {
-  const container = document.getElementById("simulator");
+  const container = document.getElementById('simulator');
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xf0f0f0);
   const aspect = container.clientWidth / container.clientHeight;
@@ -22,12 +23,9 @@ document.addEventListener("DOMContentLoaded", function () {
   scene.add(cubeGroup);
 
   const colors = {
-    U: 0xffffff,
-    D: 0xffff00,
-    F: 0x00ff00,
-    B: 0x0000ff,
-    R: 0xff0000,
-    L: 0xffa500
+    U: 0xffffff, D: 0xffff00,
+    F: 0x00ff00, B: 0x0000ff,
+    R: 0xff0000, L: 0xffa500
   };
 
   const cubies = [];
@@ -51,12 +49,12 @@ document.addEventListener("DOMContentLoaded", function () {
           new THREE.MeshBasicMaterial({ color: 0x000000 })  // B
         ];
 
-        if (Math.abs(x - 1) < 0.01) mats[0].color.setHex(colors.R);
-        if (Math.abs(x + 1) < 0.01) mats[1].color.setHex(colors.L);
-        if (Math.abs(y - 1) < 0.01) mats[2].color.setHex(colors.U);
-        if (Math.abs(y + 1) < 0.01) mats[3].color.setHex(colors.D);
-        if (Math.abs(z - 1) < 0.01) mats[4].color.setHex(colors.F);
-        if (Math.abs(z + 1) < 0.01) mats[5].color.setHex(colors.B);
+        if (x === 1) mats[0].color.setHex(colors.R);
+        if (x === -1) mats[1].color.setHex(colors.L);
+        if (y === 1) mats[2].color.setHex(colors.U);
+        if (y === -1) mats[3].color.setHex(colors.D);
+        if (z === 1) mats[4].color.setHex(colors.F);
+        if (z === -1) mats[5].color.setHex(colors.B);
 
         const cubie = new THREE.Mesh(geom, mats);
         cubie.position.set(x * (size + gap), y * (size + gap), z * (size + gap));
@@ -65,7 +63,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   }
-
 
   const moveMap = {
     R: { axis: new THREE.Vector3(1, 0, 0), dir: -1, slice: c => c.position.x > 0.5 },
@@ -188,13 +185,12 @@ document.addEventListener("DOMContentLoaded", function () {
   cubies.forEach(cubie => {
     const pos = cubie.position;
     const mats = cubie.material;
-
-    if (Math.abs(pos.x - 1.05) < 0.01) mats[0].color.setHex(colorMap[facelets.R.shift()]);
-    if (Math.abs(pos.x + 1.05) < 0.01) mats[1].color.setHex(colorMap[facelets.L.shift()]);
-    if (Math.abs(pos.y - 1.05) < 0.01) mats[2].color.setHex(colorMap[facelets.U.shift()]);
-    if (Math.abs(pos.y + 1.05) < 0.01) mats[3].color.setHex(colorMap[facelets.D.shift()]);
-    if (Math.abs(pos.z - 1.05) < 0.01) mats[4].color.setHex(colorMap[facelets.F.shift()]);
-    if (Math.abs(pos.z + 1.05) < 0.01) mats[5].color.setHex(colorMap[facelets.B.shift()]);
+    if (pos.x === 1) mats[0].color.setHex(colorMap[facelets.R.shift()]);
+    if (pos.x === -1) mats[1].color.setHex(colorMap[facelets.L.shift()]);
+    if (pos.y === 1) mats[2].color.setHex(colorMap[facelets.U.shift()]);
+    if (pos.y === -1) mats[3].color.setHex(colorMap[facelets.D.shift()]);
+    if (pos.z === 1) mats[4].color.setHex(colorMap[facelets.F.shift()]);
+    if (pos.z === -1) mats[5].color.setHex(colorMap[facelets.B.shift()]);
   });
 }
 

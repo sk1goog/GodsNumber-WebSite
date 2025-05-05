@@ -188,13 +188,12 @@ document.addEventListener("DOMContentLoaded", function () {
   cubies.forEach(cubie => {
     const pos = cubie.position;
     const mats = cubie.material;
-
-    if (Math.abs(pos.x - 1.05) < 0.01) mats[0].color.setHex(colorMap[facelets.R.shift()]);
-    if (Math.abs(pos.x + 1.05) < 0.01) mats[1].color.setHex(colorMap[facelets.L.shift()]);
-    if (Math.abs(pos.y - 1.05) < 0.01) mats[2].color.setHex(colorMap[facelets.U.shift()]);
-    if (Math.abs(pos.y + 1.05) < 0.01) mats[3].color.setHex(colorMap[facelets.D.shift()]);
-    if (Math.abs(pos.z - 1.05) < 0.01) mats[4].color.setHex(colorMap[facelets.F.shift()]);
-    if (Math.abs(pos.z + 1.05) < 0.01) mats[5].color.setHex(colorMap[facelets.B.shift()]);
+    if (pos.x === 1) mats[0].color.setHex(colorMap[facelets.R.shift()]);
+    if (pos.x === -1) mats[1].color.setHex(colorMap[facelets.L.shift()]);
+    if (pos.y === 1) mats[2].color.setHex(colorMap[facelets.U.shift()]);
+    if (pos.y === -1) mats[3].color.setHex(colorMap[facelets.D.shift()]);
+    if (pos.z === 1) mats[4].color.setHex(colorMap[facelets.F.shift()]);
+    if (pos.z === -1) mats[5].color.setHex(colorMap[facelets.B.shift()]);
   });
 }
 

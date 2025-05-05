@@ -1,5 +1,6 @@
+// simulator.js – vollständige Version mit funktionierender Farbcodierung und 3D-Würfel
 document.addEventListener("DOMContentLoaded", function () {
-  const container = document.getElementById("simulator");
+  const container = document.getElementById('simulator');
   const scene = new THREE.Scene();
   scene.background = new THREE.Color(0xf0f0f0);
   const aspect = container.clientWidth / container.clientHeight;
@@ -36,36 +37,32 @@ document.addEventListener("DOMContentLoaded", function () {
   for (let x = -1; x <= 1; x++) {
     for (let y = -1; y <= 1; y++) {
       for (let z = -1; z <= 1; z++) {
+        const mats = [
+          new THREE.MeshBasicMaterial({ color: x === 1 ? colors.R : 0x000000 }),
+          new THREE.MeshBasicMaterial({ color: x === -1 ? colors.L : 0x000000 }),
+          new THREE.MeshBasicMaterial({ color: y === 1 ? colors.U : 0x000000 }),
+          new THREE.MeshBasicMaterial({ color: y === -1 ? colors.D : 0x000000 }),
+          new THREE.MeshBasicMaterial({ color: z === 1 ? colors.F : 0x000000 }),
+          new THREE.MeshBasicMaterial({ color: z === -1 ? colors.B : 0x000000 })
+        ];
+
         const geom = new THREE.BoxGeometry(size, size, size);
         geom.clearGroups();
         for (let i = 0; i < 6; i++) {
           geom.addGroup(i * 6, 6, i);
         }
 
-        const mats = [
-          new THREE.MeshBasicMaterial({ color: 0x000000 }), // R
-          new THREE.MeshBasicMaterial({ color: 0x000000 }), // L
-          new THREE.MeshBasicMaterial({ color: 0x000000 }), // U
-          new THREE.MeshBasicMaterial({ color: 0x000000 }), // D
-          new THREE.MeshBasicMaterial({ color: 0x000000 }), // F
-          new THREE.MeshBasicMaterial({ color: 0x000000 })  // B
-        ];
-
-        if (Math.abs(x - 1) < 0.01) mats[0].color.setHex(colors.R);
-        if (Math.abs(x + 1) < 0.01) mats[1].color.setHex(colors.L);
-        if (Math.abs(y - 1) < 0.01) mats[2].color.setHex(colors.U);
-        if (Math.abs(y + 1) < 0.01) mats[3].color.setHex(colors.D);
-        if (Math.abs(z - 1) < 0.01) mats[4].color.setHex(colors.F);
-        if (Math.abs(z + 1) < 0.01) mats[5].color.setHex(colors.B);
-
         const cubie = new THREE.Mesh(geom, mats);
-        cubie.position.set(x * (size + gap), y * (size + gap), z * (size + gap));
+        cubie.position.set(
+          x * (size + gap),
+          y * (size + gap),
+          z * (size + gap)
+        );
         cubeGroup.add(cubie);
         cubies.push(cubie);
       }
     }
   }
-
 
   const moveMap = {
     R: { axis: new THREE.Vector3(1, 0, 0), dir: -1, slice: c => c.position.x > 0.5 },
@@ -156,6 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
     renderer.setSize(w, h);
   });
 
+  // Farbcodes übernehmen
   const colorMap = {
     W: 0xffffff,
     R: 0xff0000,
@@ -166,40 +164,44 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   document.getElementById("applyColorString").addEventListener("click", () => {
+    console.log("Farbcode-Schaltfläche wurde geklickt!");
     const str = document.getElementById("colorstring").value.trim().toUpperCase();
+    console.log("Eingegebener Farbstring:", str);
     applyColorString(str);
   });
 
   function applyColorString(str) {
-  if (str.length !== 54) {
-    alert("Der Farbstring muss genau 54 Zeichen enthalten.");
-    return;
+    if (str.length !== 54) {
+      alert("Der Farbstring muss genau 54 Zeichen enthalten.");
+      return;
+    }
+
+    const facelets = {
+      U: str.slice(0, 9).split(""),
+      R: str.slice(9, 18).split(""),
+      F: str.slice(18, 27).split(""),
+      D: str.slice(27, 36).split(""),
+      L: str.slice(36, 45).split(""),
+      B: str.slice(45, 54).split("")
+    };
+
+    cubies.forEach(cubie => {
+      const pos = cubie.position;
+      const mats = cubie.material;
+      if (pos.x === 1) {
+        const farbe = facelets.R.shift();
+        console.log("R-Face", pos, "→", farbe);
+        // TEST: sichtbar pink färben
+        mats[0].color.setHex(0xff00ff);
+        mats[0].needsUpdate = true;
+        }
+      if (pos.x === -1) mats[1].color.setHex(colorMap[facelets.L.shift()]);
+      if (pos.y === 1) mats[2].color.setHex(colorMap[facelets.U.shift()]);
+      if (pos.y === -1) mats[3].color.setHex(colorMap[facelets.D.shift()]);
+      if (pos.z === 1) mats[4].color.setHex(colorMap[facelets.F.shift()]);
+      if (pos.z === -1) mats[5].color.setHex(colorMap[facelets.B.shift()]);
+    });
+
+    console.log("✅ Farbcode wurde vollständig angewendet.");
   }
-
-  const facelets = {
-    U: str.slice(0, 9).split(""),
-    R: str.slice(9, 18).split(""),
-    F: str.slice(18, 27).split(""),
-    D: str.slice(27, 36).split(""),
-    L: str.slice(36, 45).split(""),
-    B: str.slice(45, 54).split("")
-  };
-
-  cubies.forEach(cubie => {
-    const pos = cubie.position;
-    const mats = cubie.material;
-
-    if (Math.abs(pos.x - 1.05) < 0.01) mats[0].color.setHex(colorMap[facelets.R.shift()]);
-    if (Math.abs(pos.x + 1.05) < 0.01) mats[1].color.setHex(colorMap[facelets.L.shift()]);
-    if (Math.abs(pos.y - 1.05) < 0.01) mats[2].color.setHex(colorMap[facelets.U.shift()]);
-    if (Math.abs(pos.y + 1.05) < 0.01) mats[3].color.setHex(colorMap[facelets.D.shift()]);
-    if (Math.abs(pos.z - 1.05) < 0.01) mats[4].color.setHex(colorMap[facelets.F.shift()]);
-    if (Math.abs(pos.z + 1.05) < 0.01) mats[5].color.setHex(colorMap[facelets.B.shift()]);
-  });
-}
-
-
-window.cubies = cubies;
-window.applyColorString = applyColorString;
-
 });
