@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   step();
-
+}
   }
 
   let animating = false;

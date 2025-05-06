@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
     U: { axis: new THREE.Vector3(0, 1, 0), dir: -1, slice: c => c.position.y > 0.5 },
     D: { axis: new THREE.Vector3(0, 1, 0), dir: 1, slice: c => c.position.y < -0.5 },
     F: { axis: new THREE.Vector3(0, 0, 1), dir: -1, slice: c => c.position.z > 0.5 },
-    B: { axis: new THREE.Vector3(0, 0, 1), dir: 1, slice: c => c.position.z < -0.5 },
+    B: { axis: new THREE.Vector3(0, 0, 1), dir: -1, slice: c => c.position.z < -0.5 },
     M: { axis: new THREE.Vector3(1, 0, 0), dir: 1, slice: c => Math.abs(c.position.x) < 0.01 },
     E: { axis: new THREE.Vector3(0, 1, 0), dir: 1, slice: c => Math.abs(c.position.y) < 0.01 },
     S: { axis: new THREE.Vector3(0, 0, 1), dir: -1, slice: c => Math.abs(c.position.z) < 0.01 },
@@ -93,41 +93,41 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function animateMove({ face, count, prime }, onComplete) {
-  const move = moveMap[face];
-  if (!move) { onComplete(); return; }
+    const move = moveMap[face];
+    if (!move) { onComplete(); return; }
+    const { axis, dir: baseDir, slice, whole } = move;
+    const direction = baseDir * (prime ? -1 : 1);
+    const total = Math.PI / 2 * count;
+    let rotated = 0;
 
-  const { axis, dir: baseDir, slice, whole } = move;
-  const direction = baseDir * (prime ? -1 : 1);
-  const total     = Math.PI / 2 * count;
-  let   rotated   = 0;
-
-  // 1) Wähle die Cubies aus: entweder ganze 27 (whole) oder nur die Slice  
-  const sliceCubies = whole
-    ? cubies.slice()            // Kopie aller Cubies
-    : cubies.filter(slice);     // nur die Ebene
-
-  // 2) Temporäre Gruppe anlegen und Cubies reparenten  
-  const tempGroup = new THREE.Group();
-  scene.add(tempGroup);
-  sliceCubies.forEach(c => tempGroup.attach(c));
-
-  // 3) Animation in kleinen Schritten  
-  function step() {
-    const delta = Math.min(0.1, total - rotated);
-    tempGroup.rotateOnAxis(axis, direction * delta);
-    rotated += delta;
-    if (rotated < total) {
-      requestAnimationFrame(step);
+    if (whole) {
+      function stepWhole() {
+        const delta = Math.min(0.1, total - rotated);
+        cubeGroup.rotateOnAxis(axis, direction * delta);
+        rotated += delta;
+        if (rotated < total) requestAnimationFrame(stepWhole);
+        else onComplete();
+      }
+      stepWhole();
     } else {
-      // 4) Nach Ende der Drehung: zurück in cubeGroup  
-      sliceCubies.forEach(c => cubeGroup.attach(c));
-      scene.remove(tempGroup);
-      onComplete();
+      const sliceCubies = cubies.filter(slice);
+      const tempGroup = new THREE.Group();
+      scene.add(tempGroup);
+      sliceCubies.forEach(c => tempGroup.attach(c));
+
+      function stepSlice() {
+        const delta = Math.min(0.1, total - rotated);
+        tempGroup.rotateOnAxis(axis, direction * delta);
+        rotated += delta;
+        if (rotated < total) requestAnimationFrame(stepSlice);
+        else {
+          sliceCubies.forEach(c => cubeGroup.attach(c));
+          scene.remove(tempGroup);
+          onComplete();
+        }
+      }
+      stepSlice();
     }
-  }
-
-  step();
-
   }
 
   let animating = false;
@@ -176,7 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
-  // 1) String in 6 Arrays je 9 Zeichen aufteilen
+  // 1. In sechs Flächen à 9 Farben aufteilen (U – R – F – D – L – B)
   const facelets = {
     U: str.slice(0, 9).split(""),
     R: str.slice(9, 18).split(""),
@@ -186,15 +186,17 @@ document.addEventListener("DOMContentLoaded", function () {
     B: str.slice(45, 54).split("")
   };
 
-  // 2) Toleranz-Vergleich
+  // Debug: ausgegebener Color‐String und Aufteilung
+  console.log("applyColorString:", facelets);
+
+  // 2. Hilfsfunktion für Positionsvergleich mit Toleranz
   const is = (a, b) => Math.abs(a - b) < 0.01;
 
-  // 3) Pro Face: filter + sortieren (jetzt mit korrigierter U/D-Reihenfolge)
+  // 3. Für jede Face‐Richtung die Cubies filtern und sortieren
   const sorted = {
     U: cubies
       .filter(c => is(c.position.y,  1.05))
-      // hinten->vorne (z = -1.05 → +1.05), dann links->rechts
-      .sort((a, b) => a.position.z - b.position.z || a.position.x - b.position.x),
+      .sort((a, b) => b.position.z - a.position.z || a.position.x - b.position.x),
     R: cubies
       .filter(c => is(c.position.x,  1.05))
       .sort((a, b) => b.position.y - a.position.y || b.position.z - a.position.z),
@@ -203,8 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .sort((a, b) => b.position.y - a.position.y || a.position.x - b.position.x),
     D: cubies
       .filter(c => is(c.position.y, -1.05))
-      // vorne->hinten (z = +1.05 → -1.05), dann links->rechts
-      .sort((a, b) => b.position.z - a.position.z || a.position.x - b.position.x),
+      .sort((a, b) => a.position.z - b.position.z || a.position.x - b.position.x),
     L: cubies
       .filter(c => is(c.position.x, -1.05))
       .sort((a, b) => b.position.y - a.position.y || a.position.z - b.position.z),
@@ -213,13 +214,23 @@ document.addEventListener("DOMContentLoaded", function () {
       .sort((a, b) => b.position.y - a.position.y || b.position.x - a.position.x)
   };
 
-  // 4) Farben auftragen
-  sorted.U.forEach(c => c.material[2].color.setHex(colorMap[facelets.U.shift()])); // Up
-  sorted.R.forEach(c => c.material[0].color.setHex(colorMap[facelets.R.shift()])); // Right
-  sorted.F.forEach(c => c.material[4].color.setHex(colorMap[facelets.F.shift()])); // Front
-  sorted.D.forEach(c => c.material[3].color.setHex(colorMap[facelets.D.shift()])); // Down
-  sorted.L.forEach(c => c.material[1].color.setHex(colorMap[facelets.L.shift()])); // Left
-  sorted.B.forEach(c => c.material[5].color.setHex(colorMap[facelets.B.shift()])); // Back
+  // Debug: Ausgeben, welche Cubies pro Face in welcher Reihenfolge kommen
+  Object.entries(sorted).forEach(([face, list]) =>
+    console.log(
+      face,
+      list.map(c => `[${c.position.x.toFixed(2)},${c.position.y.toFixed(2)},${c.position.z.toFixed(2)}]`)
+    )
+  );
+
+  // 4. Farben zeilenweise auf die sortierten Cubies auftragen
+  sorted.U.forEach(c => c.material[2].color.setHex(colorMap[facelets.U.shift()]));
+  sorted.R.forEach(c => c.material[0].color.setHex(colorMap[facelets.R.shift()]));
+  sorted.F.forEach(c => c.material[4].color.setHex(colorMap[facelets.F.shift()]));
+  sorted.D.forEach(c => c.material[3].color.setHex(colorMap[facelets.D.shift()]));
+  sorted.L.forEach(c => c.material[1].color.setHex(colorMap[facelets.L.shift()]));
+  sorted.B.forEach(c => c.material[5].color.setHex(colorMap[facelets.B.shift()]));
+
+  console.log("✅ applyColorString complete");
 }
 
 

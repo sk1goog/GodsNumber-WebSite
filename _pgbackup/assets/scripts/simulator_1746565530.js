@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
     U: { axis: new THREE.Vector3(0, 1, 0), dir: -1, slice: c => c.position.y > 0.5 },
     D: { axis: new THREE.Vector3(0, 1, 0), dir: 1, slice: c => c.position.y < -0.5 },
     F: { axis: new THREE.Vector3(0, 0, 1), dir: -1, slice: c => c.position.z > 0.5 },
-    B: { axis: new THREE.Vector3(0, 0, 1), dir: 1, slice: c => c.position.z < -0.5 },
+    B: { axis: new THREE.Vector3(0, 0, 1), dir: -1, slice: c => c.position.z < -0.5 },
     M: { axis: new THREE.Vector3(1, 0, 0), dir: 1, slice: c => Math.abs(c.position.x) < 0.01 },
     E: { axis: new THREE.Vector3(0, 1, 0), dir: 1, slice: c => Math.abs(c.position.y) < 0.01 },
     S: { axis: new THREE.Vector3(0, 0, 1), dir: -1, slice: c => Math.abs(c.position.z) < 0.01 },
@@ -93,41 +93,41 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function animateMove({ face, count, prime }, onComplete) {
-  const move = moveMap[face];
-  if (!move) { onComplete(); return; }
+    const move = moveMap[face];
+    if (!move) { onComplete(); return; }
+    const { axis, dir: baseDir, slice, whole } = move;
+    const direction = baseDir * (prime ? -1 : 1);
+    const total = Math.PI / 2 * count;
+    let rotated = 0;
 
-  const { axis, dir: baseDir, slice, whole } = move;
-  const direction = baseDir * (prime ? -1 : 1);
-  const total     = Math.PI / 2 * count;
-  let   rotated   = 0;
-
-  // 1) Wähle die Cubies aus: entweder ganze 27 (whole) oder nur die Slice  
-  const sliceCubies = whole
-    ? cubies.slice()            // Kopie aller Cubies
-    : cubies.filter(slice);     // nur die Ebene
-
-  // 2) Temporäre Gruppe anlegen und Cubies reparenten  
-  const tempGroup = new THREE.Group();
-  scene.add(tempGroup);
-  sliceCubies.forEach(c => tempGroup.attach(c));
-
-  // 3) Animation in kleinen Schritten  
-  function step() {
-    const delta = Math.min(0.1, total - rotated);
-    tempGroup.rotateOnAxis(axis, direction * delta);
-    rotated += delta;
-    if (rotated < total) {
-      requestAnimationFrame(step);
+    if (whole) {
+      function stepWhole() {
+        const delta = Math.min(0.1, total - rotated);
+        cubeGroup.rotateOnAxis(axis, direction * delta);
+        rotated += delta;
+        if (rotated < total) requestAnimationFrame(stepWhole);
+        else onComplete();
+      }
+      stepWhole();
     } else {
-      // 4) Nach Ende der Drehung: zurück in cubeGroup  
-      sliceCubies.forEach(c => cubeGroup.attach(c));
-      scene.remove(tempGroup);
-      onComplete();
+      const sliceCubies = cubies.filter(slice);
+      const tempGroup = new THREE.Group();
+      scene.add(tempGroup);
+      sliceCubies.forEach(c => tempGroup.attach(c));
+
+      function stepSlice() {
+        const delta = Math.min(0.1, total - rotated);
+        tempGroup.rotateOnAxis(axis, direction * delta);
+        rotated += delta;
+        if (rotated < total) requestAnimationFrame(stepSlice);
+        else {
+          sliceCubies.forEach(c => cubeGroup.attach(c));
+          scene.remove(tempGroup);
+          onComplete();
+        }
+      }
+      stepSlice();
     }
-  }
-
-  step();
-
   }
 
   let animating = false;

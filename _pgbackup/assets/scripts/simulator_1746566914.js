@@ -95,23 +95,20 @@ document.addEventListener("DOMContentLoaded", function () {
   function animateMove({ face, count, prime }, onComplete) {
   const move = moveMap[face];
   if (!move) { onComplete(); return; }
-
   const { axis, dir: baseDir, slice, whole } = move;
   const direction = baseDir * (prime ? -1 : 1);
-  const total     = Math.PI / 2 * count;
-  let   rotated   = 0;
+  const total = Math.PI / 2 * count;
+  let rotated = 0;
 
-  // 1) Wähle die Cubies aus: entweder ganze 27 (whole) oder nur die Slice  
-  const sliceCubies = whole
-    ? cubies.slice()            // Kopie aller Cubies
-    : cubies.filter(slice);     // nur die Ebene
+  // Wir behandeln auch ganze Würfeldrehungen wie Slice-Moves:
+  const sliceCubies = whole 
+    ? cubies.slice()          // alle Cubies
+    : cubies.filter(slice);   // nur die entsprechende Schicht
 
-  // 2) Temporäre Gruppe anlegen und Cubies reparenten  
   const tempGroup = new THREE.Group();
   scene.add(tempGroup);
   sliceCubies.forEach(c => tempGroup.attach(c));
 
-  // 3) Animation in kleinen Schritten  
   function step() {
     const delta = Math.min(0.1, total - rotated);
     tempGroup.rotateOnAxis(axis, direction * delta);
@@ -119,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (rotated < total) {
       requestAnimationFrame(step);
     } else {
-      // 4) Nach Ende der Drehung: zurück in cubeGroup  
+      // nach der Drehung zurück in cubeGroup
       sliceCubies.forEach(c => cubeGroup.attach(c));
       scene.remove(tempGroup);
       onComplete();
@@ -127,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   step();
-
+}
   }
 
   let animating = false;
