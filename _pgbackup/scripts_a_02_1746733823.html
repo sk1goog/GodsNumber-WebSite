@@ -17,12 +17,50 @@
         <link rel="stylesheet" href="assets/css/textarea.css">
         <link rel="icon" href="favicon.png" type="image/png">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
-        <style>.card-setup { border: 1px solid #ccc; border-radius: 0.5rem; padding: 1rem; } .palette { display: flex; gap: 0.5rem; margin-bottom: 1rem; } .palette button { width: 30px; height: 30px; border: 2px solid #444; cursor: pointer; } .palette button.selected { outline: 3px solid #000; } .cube-net { display: grid; grid-template: repeat(9, 30px) / repeat(12, 30px); gap: 2px; padding: 5px; } .facelet { border: 1px solid #444; box-sizing: border-box; cursor: pointer; } .facelet:focus { outline: 2px solid #000; } #result-faces, #result-colors { white-space: pre-wrap; word-break: break-all; }</style>
+        <style>
+      .card-setup {
+        border: 1px solid #ccc;
+        border-radius: 0.5rem;
+        padding: 1rem;
+      }
+      .palette {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      .palette button {
+        width: 30px;
+        height: 30px;
+        border: 2px solid #444;
+        cursor: pointer;
+      }
+      .palette button.selected {
+        outline: 3px solid #000;
+      }
+      .cube-net {
+        display: grid;
+        grid-template: repeat(9, 30px) / repeat(12, 30px);
+        gap: 2px;
+        padding: 5px;
+      }
+      .facelet {
+        border: 1px solid #444;
+        box-sizing: border-box;
+        cursor: pointer;
+      }
+      .facelet:focus {
+        outline: 2px solid #000;
+      }
+      #result-faces,
+      #result-colors {
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+    </style>
     </head>
     <body class="bg-white d-flex flex-column min-vh-100">
         <nav class="navbar navbar-expand-md navbar-light my-navbar-bg mb-0 pb-0">
-            <div class="container-fluid">
-                <a href="index.html"> <img src="assets/img/GodCubeLogo.png" alt="Logo" style="height:85px;width:85px;"> </a>
+            <div class="container-fluid"><a href="index.html"> <img src="assets/img/GodCubeLogo.png" alt="Logo" style="height:85px;width:85px;"> </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navcol-2" aria-controls="navcol-2" aria-expanded="false" aria-label="Toggle navigation"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navcol-2">
@@ -34,7 +72,7 @@
                             <a class="nav-link" href="scripts.html">Scripts</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="apps.html">Apps</a>
+                            <a class="nav-link active" href="#">Apps</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="algs.html">Algs</a>
@@ -51,10 +89,10 @@
         </nav>
         <div class="container bg-white flex-fill py-5">
             <h4>Cube Setup</h4>
-            <p>Die Seite bietet ein interaktives Setup-Tool für den Rubik&rsquo;s Cube, bei dem sich die Farben der 54 Sticker manuell über ein 2D-Gitter definieren lassen. Das Layout besteht aus einer farbigen Auswahlpalette, einer schematischen Netzdarstellung des Cubes (in 3×3×6 Felder aufgeteilt) sowie einem Button zur Ausgabe der entsprechenden String-Repräsentationen.</p>
-            <p>Das zugehörige JavaScript initialisiert eine Farbpalette, in der für jede der sechs Cube-Flächen eine Farbe vordefiniert ist. Beim Klick auf ein Farbfeld wird diese Farbe als aktuell ausgewählt. Im Cube-Netz selbst entspricht jedes aktive Gitterfeld einem der 54 Stickerpositionen des Würfels. Klicks auf diese Felder (oder Tasteneingaben via Enter bzw. Leertaste) weisen der gewählten Position die aktuell selektierte Farbe zu. Die interne Repräsentation wird in einem state-Objekt gespeichert, das je sechs Arrays mit jeweils neun Einträgen enthält.</p>
-            <p>Ein Klick auf den &bdquo;Start&ldquo;-Button führt eine Validierung durch: Jede der sechs Farben muss exakt neunmal vorkommen. Ist das nicht der Fall, wird eine Fehlermeldung ausgegeben. Ansonsten werden zwei Strings erzeugt: ein Facelet-String mit den Buchstaben U, R, F, D, L, B (entsprechend der Ausgangsfarben) und ein daraus abgeleiteter Farbstring mit den standardisierten Farbbuchstaben W, R, G, Y, O, B. Diese Strings werden im Anschluss im Textformat angezeigt und können weiterverwendet werden &ndash; etwa zur Übergabe an einen Solver oder zur Visualisierung in einem anderen Tool.</p>
-            <p>Die gesamte Logik basiert auf nativem JavaScript und kommt ohne externe Abhängigkeiten aus. Die Datenstruktur und Darstellung sind an die klassische Netzanordnung eines Würfels angelehnt und orientieren sich an der Facelet-Notation gemäß etablierten Cube-Standards.</p>
+            <p>Die Seite bietet ein interaktives Setup-Tool für den Rubik&rsquo;s Cube ...</p>
+            <p>Das zugehörige JavaScript initialisiert eine Farbpalette ...</p>
+            <p>Ein Klick auf den &bdquo;Start&ldquo;-Button führt eine Validierung durch ...</p>
+            <p>Die gesamte Logik basiert auf nativem JavaScript ...</p>
             <div class="row">
                 <div class="col-12 col-md-8">
                     <div class="card-setup mb-3 bg-white">

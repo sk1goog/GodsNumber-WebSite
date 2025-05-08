@@ -21,9 +21,16 @@
         <!-- Favicon & Apple Touch -->
         <link rel="icon" href="favicon.png" type="image/png">
         <link rel="apple-touch-icon" href="apple-touch-icon.png">
-        <style>/* Abgerundete Ecken und Schatten für das Simulator-Fenster */#simulator { border-radius: 0.5rem; overflow: hidden; border: 1px solid #ccc; }</style>
+        <style>
+      /* Abgerundete Ecken und Schatten für das Simulator-Fenster */
+      #simulator {
+        border-radius: 0.5rem;
+        overflow: hidden;
+        border: 1px solid #ccc;
+      }
+    </style>
     </head>
-    <body class="bg-white d-flex flex-column min-vh-100">
+    <body class="flex-column min-vh-100" style="display: flex;">
         <nav class="navbar navbar-expand-md my-navbar-bg mb-0 pb-0">
             <div class="container-fluid"><a href="index.html"> <img src="assets/img/GodCubeLogo.png" alt="GodCube Logo" style="height:85px;width:85px;" class="pb-0"> </a>
                 <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span>
@@ -54,11 +61,11 @@
         </nav>
         <div class="container flex-fill py-5">
             <h4>Simple Rubik Simulator</h4>
-            <p>Die Seite stellt einen einfachen 3D-Simulator für den Rubik&rsquo;s Cube bereit. Mithilfe von Three.js wird ein vollständig animierbares 3×3×3-Würfelmodell erzeugt. Die grafische Darstellung basiert auf einzelnen Cubies mit jeweils sechs separat einfärbbaren Seitenflächen. Der initiale Zustand zeigt den gelösten Würfel, wobei jede Seite mit einer der sechs Standardfarben eingefärbt ist.</p>
-            <p>Über eine Eingabeleiste lassen sich Zugfolgen in Standardnotation (z. B. R U R&apos; U&apos;) definieren. Das zugehörige Skript parst die eingegebene Zeichenkette in einzelne Bewegungsbefehle und führt diese nacheinander als Animation aus. Dabei werden jeweils nur die betroffenen Slice-Cubies temporär in eine separate Gruppe überführt, um sie um 90° (bzw. 180°) zu rotieren. Nach Abschluss der Bewegung werden die Elemente zurück in die Gesamtstruktur eingefügt. Unterstützt werden dabei auch ganze Würfelrotationen (x, y, z) sowie mittlere Ebenenbewegungen (M, E, S).</p>
-            <p>Zusätzlich kann ein Farbstring mit 54 Zeichen eingegeben werden, um einen beliebigen Cube-Zustand zu visualisieren. Die Zeichenfolge wird in sechs Flächen zu je neun Farben unterteilt, die einzelnen Cubies im 3D-Modell werden anschließend anhand ihrer räumlichen Lage identifiziert, sortiert und entsprechend eingefärbt. Unterstützte Farbbuchstaben sind W (weiß), R (rot), G (grün), Y (gelb), O (orange), B (blau).</p>
-            <p>Die Kamera ist über OrbitControls frei dreh- und zoombar, was eine kontinuierliche Betrachtung der Bewegungsabläufe aus verschiedenen Perspektiven erlaubt. Die Szene wird frameweise neu gerendert und passt sich bei Größenänderung des Fensters automatisch an.</p>
-            <p>Der Simulator eignet sich zur schrittweisen Visualisierung beliebiger Algorithmen, zur Analyse von Farbkonfigurationen sowie als Grundlage für experimentelle Erweiterungen im Bereich Cube-Animation und -Lösungsdarstellung.</p>
+            <p>Die Seite stellt einen einfachen 3D-Simulator für den Rubik&rsquo;s Cube bereit ...</p>
+            <p>Über eine Eingabeleiste lassen sich Zugfolgen in Standardnotation definieren ...</p>
+            <p>Zusätzlich kann ein Farbstring mit 54 Zeichen eingegeben werden ...</p>
+            <p>Die Kamera ist über OrbitControls frei dreh- und zoombar ...</p>
+            <p>Der Simulator eignet sich zur schrittweisen Visualisierung beliebiger Algorithmen ...</p>
             <!-- Zugfolgen-Eingabe -->
             <div id="controls" class="input-group mb-3" style="width:auto;">
                 <input id="algo" class="form-control" placeholder="Zugfolge eingeben, z.B. R U R' U x M">
