@@ -30,20 +30,17 @@
         justify-content: center;
       }
       .algo-list {
-        display: inline;
+        display: flex;
         flex-wrap: wrap;
-        gap: 0;
+        gap: 0.25rem;
         max-width: 400px;
         margin-right: 0.5rem;
-        font-family: monospace;
-        white-space: pre-wrap;
       }
       .move {
-        display: inline;
-        padding: 0;
-        margin-right: 0.5rem;
-        border: none;
-        background: none;
+        padding: 0.25rem 0.5rem;
+        border: 1px solid #ccc;
+        border-radius: 0.25rem;
+        user-select: none;
       }
       .move.next {
         background-color: #eee;

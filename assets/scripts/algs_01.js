@@ -4,28 +4,31 @@
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".simulator-wrapper").forEach(wrapper => {
     const container    = wrapper.querySelector(".simulator");
-    const input        = wrapper.querySelector(".algo");
+    const algoContainer= wrapper.querySelector(".algo-list");
     const startBtn     = wrapper.querySelector(".start");
     const stepBtn      = wrapper.querySelector(".step");
     const resetBtn     = wrapper.querySelector(".reset");
-    const nextMoveSpan = wrapper.querySelector(".next-move");
     const colorStr     = container.dataset.colors.trim();
     const algoStr      = container.dataset.algo.trim();
 
-    // Zugfolge eintragen & parsen
-    input.value = algoStr;
+    // Zugfolge parsen und Token rendern
     const moves = parseAlgorithm(algoStr);
     let nextIndex = 0;
+    algoContainer.innerHTML = "";
+    moves.forEach((m, i) => {
+      const span = document.createElement("span");
+      span.className = "move";
+      span.textContent = formatMove(m) + (i < moves.length - 1 ? " " : "");
+      algoContainer.appendChild(span);
+    });
 
-    // Szene & Kamera
-    const scene     = new THREE.Scene();
+    // Drei.js-Szene, Kamera, Renderer
+    const scene = new THREE.Scene();
     scene.background = new THREE.Color(0xf0f0f0);
-    const aspect    = container.clientWidth / container.clientHeight;
-    const camera    = new THREE.PerspectiveCamera(45, aspect, 0.1, 1000);
+    const aspect = container.clientWidth / container.clientHeight;
+    const camera = new THREE.PerspectiveCamera(45, aspect, 0.1, 1000);
     camera.position.set(5, 5, 5);
     camera.lookAt(0, 0, 0);
-
-    // Renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
@@ -41,34 +44,35 @@ document.addEventListener("DOMContentLoaded", () => {
     dirLight.position.set(5, 10, 7);
     scene.add(dirLight);
 
-    // Würfel aufbauen
+    // Würfel (Cubies) aufbauen
     const cubeGroup = new THREE.Group();
     scene.add(cubeGroup);
     const cubies = [];
     const size = 1, gap = 0.05;
     const faceColors = { R:0xff0000, L:0xffa500, U:0xffffff, D:0xffff00, F:0x00ff00, B:0x0000ff };
+
     for (let x = -1; x <= 1; x++) {
       for (let y = -1; y <= 1; y++) {
         for (let z = -1; z <= 1; z++) {
           const geom = new THREE.BoxGeometry(size, size, size);
           geom.clearGroups();
-          for (let i = 0; i < 6; i++) geom.addGroup(i * 6, 6, i);
+          for (let f = 0; f < 6; f++) geom.addGroup(f * 6, 6, f);
 
           const mats = Array(6).fill().map(() =>
             new THREE.MeshBasicMaterial({ color: 0x000000 })
           );
-          if (Math.abs(x - 1) < 0.01) mats[0].color.setHex(faceColors.R);
-          if (Math.abs(x + 1) < 0.01) mats[1].color.setHex(faceColors.L);
-          if (Math.abs(y - 1) < 0.01) mats[2].color.setHex(faceColors.U);
-          if (Math.abs(y + 1) < 0.01) mats[3].color.setHex(faceColors.D);
-          if (Math.abs(z - 1) < 0.01) mats[4].color.setHex(faceColors.F);
-          if (Math.abs(z + 1) < 0.01) mats[5].color.setHex(faceColors.B);
+          if (Math.abs(x-1)<0.01) mats[0].color.setHex(faceColors.R);
+          if (Math.abs(x+1)<0.01) mats[1].color.setHex(faceColors.L);
+          if (Math.abs(y-1)<0.01) mats[2].color.setHex(faceColors.U);
+          if (Math.abs(y+1)<0.01) mats[3].color.setHex(faceColors.D);
+          if (Math.abs(z-1)<0.01) mats[4].color.setHex(faceColors.F);
+          if (Math.abs(z+1)<0.01) mats[5].color.setHex(faceColors.B);
 
           const cubie = new THREE.Mesh(geom, mats);
           cubie.position.set(
-            x * (size + gap),
-            y * (size + gap),
-            z * (size + gap)
+            x*(size+gap),
+            y*(size+gap),
+            z*(size+gap)
           );
           cubeGroup.add(cubie);
           cubies.push(cubie);
@@ -80,42 +84,42 @@ document.addEventListener("DOMContentLoaded", () => {
     const colorMap = {
       W:0xffffff, R:0xff0000, G:0x00ff00,
       B:0x0000ff, O:0xffa500, Y:0xffff00,
-      X:0x888888  // Grauton für Platzhalter
+      X:0x888888
     };
     function applyColorString(str) {
       if (str.length !== 54) return;
       const f = {
-        U: str.slice(0, 9).split(""),
-        R: str.slice(9, 18).split(""),
-        F: str.slice(18, 27).split(""),
-        D: str.slice(27, 36).split(""),
-        L: str.slice(36, 45).split(""),
-        B: str.slice(45, 54).split("")
+        U: str.slice(0,9).split(""),
+        R: str.slice(9,18).split(""),
+        F: str.slice(18,27).split(""),
+        D: str.slice(27,36).split(""),
+        L: str.slice(36,45).split(""),
+        B: str.slice(45,54).split("")
       };
-      const near = (a, b) => Math.abs(a - b) < 0.01;
+      const near = (a,b) => Math.abs(a-b)<0.01;
       const sorted = {
-        U: cubies.filter(c => near(c.position.y,  1.05))
-                  .sort((a, b) => a.position.z - b.position.z || a.position.x - b.position.x),
-        R: cubies.filter(c => near(c.position.x,  1.05))
-                  .sort((a, b) => b.position.y - a.position.y || b.position.z - a.position.z),
-        F: cubies.filter(c => near(c.position.z,  1.05))
-                  .sort((a, b) => b.position.y - a.position.y || a.position.x - b.position.x),
-        D: cubies.filter(c => near(c.position.y, -1.05))
-                  .sort((a, b) => b.position.z - a.position.z || a.position.x - b.position.x),
-        L: cubies.filter(c => near(c.position.x, -1.05))
-                  .sort((a, b) => b.position.y - a.position.y || a.position.z - b.position.z),
-        B: cubies.filter(c => near(c.position.z, -1.05))
-                  .sort((a, b) => b.position.y - a.position.y || b.position.x - a.position.x)
+        U: cubies.filter(c=>near(c.position.y,1.05))
+                  .sort((a,b)=>a.position.z-b.position.z||a.position.x-b.position.x),
+        R: cubies.filter(c=>near(c.position.x,1.05))
+                  .sort((a,b)=>b.position.y-a.position.y||b.position.z-a.position.z),
+        F: cubies.filter(c=>near(c.position.z,1.05))
+                  .sort((a,b)=>b.position.y-a.position.y||a.position.x-b.position.x),
+        D: cubies.filter(c=>near(c.position.y,-1.05))
+                  .sort((a,b)=>b.position.z-a.position.z||a.position.x-b.position.x),
+        L: cubies.filter(c=>near(c.position.x,-1.05))
+                  .sort((a,b)=>b.position.y-a.position.y||a.position.z-b.position.z),
+        B: cubies.filter(c=>near(c.position.z,-1.05))
+                  .sort((a,b)=>b.position.y-a.position.y||b.position.x-a.position.x)
       };
-      sorted.U.forEach(c => c.material[2].color.setHex(colorMap[f.U.shift()]));
-      sorted.R.forEach(c => c.material[0].color.setHex(colorMap[f.R.shift()]));
-      sorted.F.forEach(c => c.material[4].color.setHex(colorMap[f.F.shift()]));
-      sorted.D.forEach(c => c.material[3].color.setHex(colorMap[f.D.shift()]));
-      sorted.L.forEach(c => c.material[1].color.setHex(colorMap[f.L.shift()]));
-      sorted.B.forEach(c => c.material[5].color.setHex(colorMap[f.B.shift()]));
+      sorted.U.forEach(c=>c.material[2].color.setHex(colorMap[f.U.shift()]));
+      sorted.R.forEach(c=>c.material[0].color.setHex(colorMap[f.R.shift()]));
+      sorted.F.forEach(c=>c.material[4].color.setHex(colorMap[f.F.shift()]));
+      sorted.D.forEach(c=>c.material[3].color.setHex(colorMap[f.D.shift()]));
+      sorted.L.forEach(c=>c.material[1].color.setHex(colorMap[f.L.shift()]));
+      sorted.B.forEach(c=>c.material[5].color.setHex(colorMap[f.B.shift()]));
     }
 
-    // Initialzustand anwenden & speichern
+    // Initialzustand anwenden & Transforms speichern
     applyColorString(colorStr);
     const initialTransforms = cubies.map(c => ({
       pos: c.position.clone(),
@@ -124,44 +128,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Parser & Move-Map
     const moveMap = {
-      R: { axis: new THREE.Vector3(1,0,0), dir:-1, slice: c=>c.position.x>0.5 },
-      L: { axis: new THREE.Vector3(1,0,0), dir: 1, slice: c=>c.position.x<-0.5 },
-      U: { axis: new THREE.Vector3(0,1,0), dir:-1, slice: c=>c.position.y>0.5 },
-      D: { axis: new THREE.Vector3(0,1,0), dir: 1, slice: c=>c.position.y<-0.5 },
-      F: { axis: new THREE.Vector3(0,0,1), dir:-1, slice: c=>c.position.z>0.5 },
-      B: { axis: new THREE.Vector3(0,0,1), dir: 1, slice: c=>c.position.z<-0.5 },
-      M: { axis: new THREE.Vector3(1,0,0), dir: 1, slice: c=>Math.abs(c.position.x)<0.01 },
-      E: { axis: new THREE.Vector3(0,1,0), dir: 1, slice: c=>Math.abs(c.position.y)<0.01 },
-      S: { axis: new THREE.Vector3(0,0,1), dir:-1, slice: c=>Math.abs(c.position.z)<0.01 },
-      x: { axis: new THREE.Vector3(1,0,0), dir:-1, whole:true },
-      y: { axis: new THREE.Vector3(0,1,0), dir:-1, whole:true },
-      z: { axis: new THREE.Vector3(0,0,1), dir:-1, whole:true }
+      R:{axis:new THREE.Vector3(1,0,0),dir:-1,slice:c=>c.position.x>0.5},
+      L:{axis:new THREE.Vector3(1,0,0),dir: 1,slice:c=>c.position.x<-0.5},
+      U:{axis:new THREE.Vector3(0,1,0),dir:-1,slice:c=>c.position.y>0.5},
+      D:{axis:new THREE.Vector3(0,1,0),dir: 1,slice:c=>c.position.y<-0.5},
+      F:{axis:new THREE.Vector3(0,0,1),dir:-1,slice:c=>c.position.z>0.5},
+      B:{axis:new THREE.Vector3(0,0,1),dir: 1,slice:c=>c.position.z<-0.5},
+      M:{axis:new THREE.Vector3(1,0,0),dir: 1,slice:c=>Math.abs(c.position.x)<0.01},
+      E:{axis:new THREE.Vector3(0,1,0),dir: 1,slice:c=>Math.abs(c.position.y)<0.01},
+      S:{axis:new THREE.Vector3(0,0,1),dir:-1,slice:c=>Math.abs(c.position.z)<0.01},
+      x:{axis:new THREE.Vector3(1,0,0),dir:-1,whole:true},
+      y:{axis:new THREE.Vector3(0,1,0),dir:-1,whole:true},
+      z:{axis:new THREE.Vector3(0,0,1),dir:-1,whole:true}
     };
     function parseAlgorithm(str) {
-      return str.trim().split(/\s+/).map(tok => ({
+      return str.trim().split(/\s+/).map(tok=>({
         face: tok[0],
-        count: tok.endsWith("2") ? 2 : 1,
+        count: tok.endsWith("2")?2:1,
         prime: tok.endsWith("'")
       }));
+    }
+    function formatMove(m) {
+      return m.face + (m.prime?"'":"") + (m.count===2?"2":"");
+    }
+
+    // Highlight next token
+    function highlightNext() {
+      const tokens = algoContainer.querySelectorAll(".move");
+      tokens.forEach(t => t.classList.remove("next"));
+      if (nextIndex < tokens.length) tokens[nextIndex].classList.add("next");
     }
 
     // Animations-Engine
     function animateMove(move, done) {
       const m = moveMap[move.face];
       if (!m) { done(); return; }
-      const direction = m.dir * (move.prime ? -1 : 1);
-      const total     = Math.PI/2 * move.count;
-      let   rotated   = 0;
+      const dir   = m.dir * (move.prime?-1:1),
+            total = Math.PI/2 * move.count;
+      let   rot   = 0;
       const sliceCubies = m.whole ? cubies.slice() : cubies.filter(m.slice);
       const tmpGroup    = new THREE.Group();
       scene.add(tmpGroup);
       sliceCubies.forEach(c => tmpGroup.attach(c));
 
       (function step() {
-        const delta = Math.min(0.1, total - rotated);
-        tmpGroup.rotateOnAxis(m.axis, direction * delta);
-        rotated += delta;
-        if (rotated < total) requestAnimationFrame(step);
+        const delta = Math.min(0.1, total - rot);
+        tmpGroup.rotateOnAxis(m.axis, dir * delta);
+        rot += delta;
+        if (rot < total) requestAnimationFrame(step);
         else {
           sliceCubies.forEach(c => cubeGroup.attach(c));
           scene.remove(tmpGroup);
@@ -177,58 +191,39 @@ document.addEventListener("DOMContentLoaded", () => {
       animateMove(seq.shift(), () => runSequence(seq, onDone));
     }
 
-    // Anzeige & Button-Logik
-    function formatMove(m) {
-      return m.face + (m.prime ? "'" : "") + (m.count === 2 ? "2" : "");
-    }
-    function updateNextMove() {
-      if (nextIndex < moves.length) {
-        nextMoveSpan.textContent = "Nächster Zug: " + formatMove(moves[nextIndex]);
-        stepBtn.disabled = false;
-      } else {
-        nextMoveSpan.textContent = "Fertig";
-        stepBtn.disabled = true;
-      }
-    }
-
-    // Start-Button: gesamte Sequenz
+    // Button-Handler
     startBtn.addEventListener("click", () => {
       if (animating) return;
       startBtn.disabled = true;
-      stepBtn.disabled = true;
-      nextMoveSpan.textContent = "Läuft…";
-      runSequence(moves.slice(), () => {
-        nextMoveSpan.textContent = "Fertig";
-      });
+      stepBtn.disabled  = true;
+      runSequence(moves.slice(), () => {});
     });
-
-    // Einzelschritt-Button
     stepBtn.addEventListener("click", () => {
       if (animating) return;
       startBtn.disabled = true;
       animateMove(moves[nextIndex], () => {
         nextIndex++;
-        updateNextMove();
+        highlightNext();
+        if (nextIndex >= moves.length) stepBtn.disabled = true;
       });
     });
-
-    // Zurücksetzen
     resetBtn.addEventListener("click", () => {
-      animating = false;
+      animating        = false;
       startBtn.disabled = false;
-      nextIndex = 0;
-      cubies.forEach((c, i) => {
+      stepBtn.disabled  = false;
+      nextIndex        = 0;
+      cubies.forEach((c,i) => {
         c.position.copy(initialTransforms[i].pos);
         c.quaternion.copy(initialTransforms[i].quat);
       });
       applyColorString(colorStr);
-      updateNextMove();
+      highlightNext();
     });
 
-    // Initial
-    updateNextMove();
+    // Erst-Highlight
+    highlightNext();
 
-    // Render-Loop & Resize
+    // Render & Resize Loop
     (function render() {
       requestAnimationFrame(render);
       controls.update();
@@ -236,7 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })();
     window.addEventListener("resize", () => {
       const w = container.clientWidth, h = container.clientHeight;
-      camera.aspect = w / h;
+      camera.aspect = w/h;
       camera.updateProjectionMatrix();
       renderer.setSize(w, h);
     });
