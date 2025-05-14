@@ -64,8 +64,7 @@
     <body class="flex-column min-vh-100" style="display: flex;">
         <!-- Navbar -->
         <nav class="navbar navbar-expand-md my-navbar-bg mb-0 pb-0">
-            <div class="container-fluid">
-                <a href="index.html"> <img src="assets/img/GodCubeLogo.png" alt="GodCube Logo" style="height:85px; width:85px;" class="pb-0"/> </a>
+            <div class="container-fluid"><a href="index.html"> <img src="assets/img/GodCubeLogo.png" alt="GodCube Logo" style="height:85px; width:85px;" class="pb-0"/> </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navcol-2">
@@ -94,50 +93,37 @@
         </nav>
         <!-- Haupt-Container -->
         <main class="container flex-fill py-5">
-            <h2>Layer-by-Layer Methode (LBL)</h2>
-            <p>Die Layer-by-Layer-Methode (kurz: LBL) ist eine bewährte und systematische Herangehensweise zur Lösung des Rubik&rsquo;s Cube. Sie eignet sich insbesondere für Einsteiger:innen, da sie auf einem logisch aufgebauten und leicht nachvollziehbaren Prinzip basiert: Der Würfel wird Schicht für Schicht, also Ebene für Ebene, in mehreren klar definierten Schritten gelöst.</p>
-            <p>Begonnen wird mit dem weißen Kreuz auf der Unterseite. Darauf folgt das Einsetzen der vier weißen Ecken, sodass die gesamte untere Ebene vollständig ist. In der nächsten Phase wird die mittlere Ebene durch gezieltes Einfügen der Kantensteine vervollständigt. Abschließend wird die oberste gelbe Fläche gelöst – zunächst farblich, anschließend strukturell durch das korrekte Positionieren und Drehen der letzten Steine.</p>
-            <p>Durch die schrittweise Vorgehensweise lassen sich alle Situationen mit einer überschaubaren Anzahl an einfachen Algorithmen bewältigen. Dabei bleibt der Würfel in jedem Schritt übersichtlich und kontrollierbar, was diese Methode besonders einsteigerfreundlich macht.</p>
-            <p>Die Layer-by-Layer-Methode bietet einen idealen Einstieg in das Verständnis des Würfels und vermittelt ein grundlegendes Gefühl für dessen Struktur und Mechanik – ganz ohne komplexe Techniken. </p>
-            <h5>1. Erste Ebene: Weißes Kreuz + Ecken</h5>
-            <p>Ziel dieses Schritts ist es, auf der weißen Fläche ein kreuzförmiges Muster zu erzeugen – also ein weißes „Pluszeichen“. Dabei ist jedoch zu beachten, dass nicht nur die weiße Fläche korrekt angeordnet ist, sondern auch die Seitenfarben der eingesetzten Kantensteine mit den Farben der angrenzenden Mittelsteine übereinstimmen. Eine weiße Kante mit grüner Seitenfarbe muss beispielsweise zwischen dem weißen Zentrum auf der Unterseite und dem grünen Zentrum auf der Seitenfläche positioniert werden. </p>
-            <!-- Abbildung ohne Simulation -->
-            <div class="row align-items-start mb-5">
-                <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
-                    <img src="assets/img/Algs/Algs_01-01.svg" class="cube-thumb" alt="Würfelabbildung 2"/>
-                </div>
-                <div class="col-12 col-md-4">
-                    <p>Das weiße Kreuz kann zunächst grob zusammengesetzt und anschließend durch gezieltes Drehen der oberen Ebene angepasst werden, sodass die Kanten farblich korrekt ausgerichtet sind, bevor sie auf die untere Ebene verschoben werden. Für diesen Schritt sind keine speziellen Algorithmen erforderlich &ndash; es genügt ein grundlegendes Verständnis für die Bewegungslogik des Würfels und ein systematisches Vorgehen.</p>
-                </div>
-            </div>
             <!-- Simulation 1 -->
             <div class="row align-items-start mb-5">
                 <!-- Bild-Spalte -->
                 <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
-                    <img src="assets/img/Algs/Algs_01-02.svg" class="cube-thumb" alt="Würfelabbildung 1"/>
+                    <img src="assets/img/Algs/Algs_01-01.svg" class="cube-thumb" alt="Würfelabbildung 1"/>
                 </div>
                 <!-- Text-Spalte -->
                 <div class="col-12 col-md-4">
-                    <p>Der passende Stein befindet sich bereits auf der untersten Ebene und steht unter der Zielposition. Die weiße Fläche zeigt dabei zur linken Seite.</p>
+                    <h3>Algorithmus-Rotation</h3>
+                    <p>
+            Diese Simulation zeigt die Grundrotationen R U R' U' x M F. Der
+            Würfel startet in der Standardansicht. </p>
+                    <p>
+            Nutze die Steuerelemente, um die Animation zu starten,
+            Einzelschritte auszuführen oder den Zustand zurückzusetzen. </p>
                 </div>
                 <!-- Simulations-Spalte -->
                 <div class="col-12 col-md-6">
                     <div class="simulator-wrapper">
                         <!-- Ratio-Container für Canvas (4:3) -->
                         <div class="ratio ratio-4x3 w-100 mb-3">
-                            <div class="simulator" id="sim1" data-colors="WWWWWWWWXXRRXRXRXXGGXXGXXXWXXGXXXXXXOOOXXXXXXBBBXXXXXX" data-algo="F D F'"></div>
+                            <div class="simulator" id="sim1" data-colors="WWWWWWWWWRRRXXXXXXGGGXXXXXXYYYYYYYYYOOOXXXXXXBBBXXXXXX" data-algo="R U R U' x M F"></div>
                         </div>
                         <!-- Controls -->
                         <div class="controls">
                             <div class="algo-list"></div>
-                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
-                                <i class="bi bi-play-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
-                                <i class="bi bi-skip-forward-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
-                                <i class="bi bi-arrow-counterclockwise"></i>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
                             </button>
                         </div>
                     </div>
@@ -146,26 +132,26 @@
             <!-- Simulation 2 -->
             <div class="row align-items-start mb-5">
                 <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
-                    <img src="assets/img/Algs/Algs_01-03.svg" class="cube-thumb" alt="Würfelabbildung 2"/>
+                    <img src="assets/img/Algs/Algs_01-02.svg" class="cube-thumb" alt="Würfelabbildung 2"/>
                 </div>
                 <div class="col-12 col-md-4">
-                    <p>Der passende Stein befindet sich auf der untersten Ebene, direkt unterhalb der Zielposition. Die weiße Fläche zeigt dabei zur rechten Seite.</p>
+                    <h3>Front-Back Algorithmus</h3>
+                    <p>
+            Beispiel für einen Front-Back-Algorithmus: F L F' L' U z R. Diese
+            Aktion verändert Vorder- und Rückseite des Würfels. </p>
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="simulator-wrapper">
                         <div class="ratio ratio-4x3 w-100 mb-3">
-                            <div class="simulator" id="sim2" data-colors="WWWWWWWWXXRRXRXWXXGGXXGXXXGXXRXXXXXXOOOXXXXXXBBBXXXXXX" data-algo="R' D' R"></div>
+                            <div class="simulator" id="sim2" data-colors="WWWWWWWWWRRRRRRYYYGGGGGGRRRYYYYYYYYYOOOOOOXXXBBBBBBGGG" data-algo="F L F' L' U z R"></div>
                         </div>
                         <div class="controls">
                             <div class="algo-list"></div>
-                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
-                                <i class="bi bi-play-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
-                                <i class="bi bi-skip-forward-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
-                                <i class="bi bi-arrow-counterclockwise"></i>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
                             </button>
                         </div>
                     </div>
@@ -174,33 +160,32 @@
             <!-- Simulation 3 -->
             <div class="row align-items-start">
                 <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
-                    <img src="assets/img/Algs/Algs_01-04.svg" class="cube-thumb" alt="Würfelabbildung 3"/>
+                    <img src="assets/img/Algs/Algs_01-03.svg" class="cube-thumb" alt="Würfelabbildung 3"/>
                 </div>
                 <div class="col-12 col-md-4">
-                    <p>Der passende Stein befindet sich auf der untersten Ebene, direkt unter der Zielposition, wobei die weiße Fläche nach unten zeigt. Durch einen vorbereitenden Zug (F D2 F&apos; D&apos;) wird der Stein zunächst in eine günstigere Ausrichtung gebracht, sodass anschließend einer der zuvor beschriebenen Algorithmen (F D F&apos;) erneut angewendet werden kann.</p>
+                    <h3>Mittlere Ebene</h3>
+                    <p>
+            Mittlere Ebenenbewegung: M E S x y z F R U. Diese Ansicht zeigt die
+            Verschiebung der mittleren Schichten. </p>
                 </div>
                 <div class="col-12 col-md-6">
                     <div class="simulator-wrapper">
                         <div class="ratio ratio-4x3 w-100 mb-3">
-                            <div class="simulator" id="sim3" data-colors="WWWWWWWWXXRRXRXGXXGGXXGXXXRXXWXXXXXXOOOXXXXXXBBBXXXXXX" data-algo="F D2 F' D' F D F'"></div>
+                            <div class="simulator" id="sim3" data-colors="WYWWYWWYWRORRORRORGRGGRGGRGYYYYYYYYYOBOOBOOBOBXBBXBBXB" data-algo="M E S x y z F R U"></div>
                         </div>
                         <div class="controls">
                             <div class="algo-list"></div>
-                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
-                                <i class="bi bi-play-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
-                                <i class="bi bi-skip-forward-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
-                                <i class="bi bi-arrow-counterclockwise"></i>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
-        <h3>Algorithmus-Rotation</h3>
         <!-- Footer -->
         <footer class="text-center py-4 my-navbar-bg">
             <div class="container">
@@ -210,8 +195,7 @@
                     </div>
                     <div class="col-12 col-lg-6 text-center text-lg-end">
                         <ul class="list-inline mb-0">
-                            <li class="list-inline-item">
-                                <a class="cube-link" href="impressum.html">Impressum Datenschutz</a>
+                            <li class="list-inline-item"><a class="cube-link" href="impressum.html">Impressum Datenschutz</a>
                             </li>
                         </ul>
                     </div>

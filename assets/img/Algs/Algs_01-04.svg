@@ -4,7 +4,7 @@
    width="150px"
    height="157px"
    id="svg28"
-   sodipodi:docname="Algs_01-02.svg"
+   sodipodi:docname="Algs_01-04.svg"
    inkscape:version="1.4 (e7c3feb1, 2024-10-09)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -69,7 +69,7 @@
        d="M 27,102 48,113 48,138 28,127"
        id="path9" />
     <path
-       style="fill:#ffffff"
+       style="fill:#ff0000"
        d="M 51,114 74,126 74,152 51,139"
        id="path10" />
     <path
@@ -129,7 +129,7 @@
        d="M 146,60 145,87 127,97 128,69"
        id="path25" />
     <path
-       style="fill:#ff0000"
+       style="fill:#00ff00"
        d="M 77,153 99,141 100,114 77,126"
        id="path26" />
     <path
