@@ -1,35 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- Hauptseite -->
   <url>
     <loc>https://www.godsnumber.de/</loc>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
   </url>
-  <url>
-    <loc>https://www.godsnumber.de/about.html</loc>
-  </url>
-  <url>
-    <loc>https://www.godsnumber.de/algs.html</loc>
-  </url>
-  <url>
-    <loc>https://www.godsnumber.de/apps.html</loc>
-  </url>
-  <url>
-    <loc>https://www.godsnumber.de/impressum.html</loc>
-  </url>
-  <url>
-    <loc>https://www.godsnumber.de/maths.html</loc>
-  </url>
-  <url>
-    <loc>https://www.godsnumber.de/scripts_01.html</loc>
-  </url>
-  <url>
-    <loc>https://www.godsnumber.de/scripts_02.html</loc>
-  </url>
-  <url>
-    <loc>https://www.godsnumber.de/scripts_03.html</loc>
-  </url>
-  <url>
-    <loc>https://www.godsnumber.de/scripts_04.html</loc>
-  </url>
+  
+  <!-- Standardseiten -->
+  <url><loc>https://www.godsnumber.de/index.html</loc></url>
+  <url><loc>https://www.godsnumber.de/about.html</loc></url>
+  <url><loc>https://www.godsnumber.de/impressum.html</loc></url>
+  <url><loc>https://www.godsnumber.de/links.html</loc></url>
+  <url><loc>https://www.godsnumber.de/base.html</loc></url>
+  
+  <!-- Algorithmen -->
+  <url><loc>https://www.godsnumber.de/algs.html</loc></url>
+  <url><loc>https://www.godsnumber.de/algs_01.html</loc></url>
+  
+  <!-- Skriptübersicht -->
+  <url><loc>https://www.godsnumber.de/scripts.html</loc></url>
+  <url><loc>https://www.godsnumber.de/scripts_01.html</loc></url>
+  <url><loc>https://www.godsnumber.de/scripts_02.html</loc></url>
+  <url><loc>https://www.godsnumber.de/scripts_03.html</loc></url>
+  <url><loc>https://www.godsnumber.de/scripts_a_01.html</loc></url>
+  <url><loc>https://www.godsnumber.de/scripts_a_02.html</loc></url>
+
+  <!-- Optional (Test-/Entwicklungsseite) -->
+  <url><loc>https://www.godsnumber.de/dummy.html</loc></url>
 </urlset>
