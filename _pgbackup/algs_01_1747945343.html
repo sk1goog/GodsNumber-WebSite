@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="de">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
+        <title>Algs 01 – Simulation</title>
+        <meta name="description" content="Interaktive Simulationen von Rubik's Cube Zugfolgen mit Three.js und Bootstrap."/>
+        <meta name="keywords" content="Rubik's Cube, Simulation, Three.js, Bootstrap, Zugfolgen, Algs"/>
+        <link rel="canonical" href="https://www.godsnumber.de/algs_01.html"/>
+        <meta property="og:title" content="Algs 01 – Simulation"/>
+        <meta property="og:description" content="Interaktive Würfel-Simulationen zur Veranschaulichung von Zugfolgen."/>
+        <meta property="og:image" content="https://www.godsnumber.de/assets/img/Algs/Algs_01-Thumbnail.png"/>
+        <!-- Lokales Bootstrap & eigene Styles -->
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css"/>
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="assets/css/Footer-Multi-Column-icons.css"/>
+        <link rel="stylesheet" href="assets/css/Simple-accordion-with-state-indicator-button.css"/>
+        <link rel="stylesheet" href="assets/css/styles.css"/>
+        <link rel="stylesheet" href="assets/css/textarea.css"/>
+        <!-- CDN Bootstrap & Icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"/>
+        <!-- Favicons -->
+        <link rel="icon" href="favicon.png" type="image/png"/>
+        <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+        <style>/* Zusatz-Styles für Simulator-Template */.simulator-wrapper { display: flex; flex-direction: column; align-items: center; margin-bottom: 1.5rem; } .simulator { width: 100%; height: 100%; } .simulator canvas { width: 100% !important; height: 100% !important; display: block; } .controls { display: flex; align-items: center; margin-top: 0.5rem; width: 100%; } .controls .algo-list { flex-grow: 1; } .controls .start, .controls .step, .controls .reset { padding: 0.25rem 0.5rem; margin-left: 0.5rem; } .move.next { background-color: #eee; }</style>
+    </head>
+    <body class="flex-column min-vh-100" style="display: flex;">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-md my-navbar-bg mb-0 pb-0">
+            <div class="container-fluid">
+                <a href="index.html"> <img src="assets/img/GodCubeLogo.png" alt="GodCube Logo" style="height:85px; width:85px;" class="pb-0"/> </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navcol-2">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Welcome</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="scripts.html">Scripts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="apps.html">Base</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="algs.html">Algs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="maths.html">Links</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">About</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Haupt-Container -->
+        <main class="container flex-fill py-5">
+            <h2>Layer-by-Layer Methode (LBL)</h2>
+            <p>Die Layer-by-Layer-Methode (kurz: LBL) ist eine bewährte und systematische Herangehensweise zur Lösung des Rubik&rsquo;s Cube. Sie eignet sich insbesondere für Einsteiger:innen, da sie auf einem logisch aufgebauten und leicht nachvollziehbaren Prinzip basiert: Der Würfel wird Schicht für Schicht, also Ebene für Ebene, in mehreren klar definierten Schritten gelöst.</p>
+            <p>Begonnen wird mit dem weißen Kreuz auf der Unterseite. Darauf folgt das Einsetzen der vier weißen Ecken, sodass die gesamte untere Ebene vollständig ist. In der nächsten Phase wird die mittlere Ebene durch gezieltes Einfügen der Kantensteine vervollständigt. Abschließend wird die oberste gelbe Fläche gelöst – zunächst farblich, anschließend strukturell durch das korrekte Positionieren und Drehen der letzten Steine.</p>
+            <p>Durch die schrittweise Vorgehensweise lassen sich alle Situationen mit einer überschaubaren Anzahl an einfachen Algorithmen bewältigen. Dabei bleibt der Würfel in jedem Schritt übersichtlich und kontrollierbar, was diese Methode besonders einsteigerfreundlich macht.</p>
+            <p>Die Layer-by-Layer-Methode bietet einen idealen Einstieg in das Verständnis des Würfels und vermittelt ein grundlegendes Gefühl für dessen Struktur und Mechanik – ganz ohne komplexe Techniken. </p>
+            <h5>1. Erste Ebene: Weißes Kreuz + Ecken</h5>
+            <p>Ziel dieses Schritts ist es, auf der weißen Fläche ein kreuzförmiges Muster zu erzeugen – also ein weißes „Pluszeichen“. Dabei ist jedoch zu beachten, dass nicht nur die weiße Fläche korrekt angeordnet ist, sondern auch die Seitenfarben der eingesetzten Kantensteine mit den Farben der angrenzenden Mittelsteine übereinstimmen. Eine weiße Kante mit grüner Seitenfarbe muss beispielsweise zwischen dem weißen Zentrum auf der Unterseite und dem grünen Zentrum auf der Seitenfläche positioniert werden. </p>
+            <!-- Abbildung ohne Simulation -->
+            <div class="row align-items-start mb-5">
+                <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
+                    <img src="assets/img/Algs/Algs_01-01.svg" class="cube-thumb" alt="Würfelabbildung 1"/>
+                </div>
+                <div class="col-12 col-md-4">
+                    <p>Das weiße Kreuz kann zunächst grob zusammengesetzt und anschließend durch gezieltes Drehen der oberen Ebene angepasst werden, sodass die Kanten farblich korrekt ausgerichtet sind, bevor sie auf die untere Ebene verschoben werden. Für diesen Schritt sind keine speziellen Algorithmen erforderlich &ndash; es genügt ein grundlegendes Verständnis für die Bewegungslogik des Würfels und ein systematisches Vorgehen.</p>
+                </div>
+            </div>
+            <!-- Simulation 1 -->
+            <div class="row align-items-start mb-5">
+                <!-- Bild-Spalte -->
+                <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
+                    <img src="assets/img/Algs/Algs_01-02.svg" class="cube-thumb" alt="Würfelabbildung 2"/>
+                </div>
+                <!-- Text-Spalte -->
+                <div class="col-12 col-md-4">
+                    <p>Der passende Stein befindet sich bereits auf der untersten Ebene und steht unter der Zielposition. Die weiße Fläche zeigt dabei zur linken Seite.<br><b>F D F&apos;</b><br></p>
+                </div>
+                <!-- Simulations-Spalte -->
+                <div class="col-12 col-md-6">
+                    <div class="simulator-wrapper">
+                        <!-- Ratio-Container für Canvas (4:3) -->
+                        <div class="ratio ratio-4x3 w-100 mb-3">
+                            <div class="simulator" id="sim1" data-colors="WWWWWWWWXXRRXRXRXXGGXXGXXXWXXGXXXXXXOOOXXXXXXBBBXXXXXX" data-algo="F D F'"></div>
+                        </div>
+                        <!-- Controls -->
+                        <div class="controls">
+                            <div class="algo-list"></div>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Simulation 2 -->
+            <div class="row align-items-start mb-5">
+                <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
+                    <img src="assets/img/Algs/Algs_01-03.svg" class="cube-thumb" alt="Würfelabbildung 3"/>
+                </div>
+                <div class="col-12 col-md-4">
+                    <p>Der passende Stein befindet sich auf der untersten Ebene, direkt unterhalb der Zielposition. Die weiße Fläche zeigt dabei zur rechten Seite.<br><b>R&apos; D&apos; R</b><br></p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="simulator-wrapper">
+                        <div class="ratio ratio-4x3 w-100 mb-3">
+                            <div class="simulator" id="sim2" data-colors="WWWWWWWWXXRRXRXWXXGGXXGXXXGXXRXXXXXXOOOXXXXXXBBBXXXXXX" data-algo="R' D' R"></div>
+                        </div>
+                        <div class="controls">
+                            <div class="algo-list"></div>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Simulation 3 -->
+            <div class="row align-items-start">
+                <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
+                    <img src="assets/img/Algs/Algs_01-04.svg" class="cube-thumb" alt="Würfelabbildung 4"/>
+                </div>
+                <div class="col-12 col-md-4">
+                    <p>Der passende Stein befindet sich auf der untersten Ebene, direkt unter der Zielposition, wobei die weiße Fläche nach unten zeigt. Durch einen vorbereitenden Zug <br><b>F D2 F&apos; D&apos; </b><br>wird der Stein zunächst in eine günstigere Ausrichtung gebracht, sodass anschließend einer der zuvor beschriebenen Algorithmen <br><b>F D F&apos; </b><br>erneut angewendet werden kann.</p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="simulator-wrapper">
+                        <div class="ratio ratio-4x3 w-100 mb-3">
+                            <div class="simulator" id="sim3" data-colors="WWWWWWWWXXRRXRXGXXGGXXGXXXRXXWXXXXXXOOOXXXXXXBBBXXXXXX" data-algo="F D2 F' D' F D F'"></div>
+                        </div>
+                        <div class="controls">
+                            <div class="algo-list"></div>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h5>2. Die zweite Ebene lösen (Second Layer Edges)</h5>
+            <p>In diesem Schritt ist das Ziel, die vier Kantensteine der mittleren Ebene korrekt einzusetzen, sodass sie jeweils zwischen den passenden farbigen Zentren der Seitenflächen liegen und farblich korrekt ausgerichtet sind. Diese Kanten enthalten keine gelbe Farbe, da Gelb der weißen Seite gegenüberliegt und zur obersten Ebene gehört. Voraussetzung ist, dass die gesamte untere Ebene &ndash; also das weiße Kreuz samt den weißen Ecken &ndash; bereits korrekt gelöst ist.</p>
+            <p>Bevor mit dem Einsetzen der Kanten begonnen wird, wird der Würfel in der Regel einmal auf den Kopf gedreht, sodass sich die weiße Fläche nun unten befindet. Dadurch entspricht die visuelle Orientierung der gewohnten Perspektive vieler Lösungsanleitungen, bei denen die noch ungelösten Ebenen oben sichtbar sind und die gelbe Seite nach oben zeigt. Die Kanten der mittleren Ebene werden nun einzeln aus der obersten Ebene identifiziert und mit bestimmten Algorithmen präzise an ihre Zielpositionen eingesetzt.</p>
+            <p>Positioniere den Kantenstein so, dass seine Vorderseite mit der Farbe des Mittelstücks auf derselben Seite übereinstimmt &ndash; zum Beispiel: wenn die Vorderseite grün ist, soll auch die angrenzende Mittelsteinfarbe grün sein. Nun entscheidest du, wohin das Kantenstück muss &ndash; nach links oder nach rechts?<br></p>
+            <!-- Simulation 4 -->
+            <div class="row align-items-start mb-5">
+                <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
+                    <img src="assets/img/Algs/Algs_01-05.svg" class="cube-thumb" alt="Würfelabbildung 5"/>
+                </div>
+                <div class="col-12 col-md-4"><b class="">1. Kante muss nach links:</b>
+                    <p class="">U&apos; L&apos; U L U F U&apos; F&apos;<br></p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="simulator-wrapper">
+                        <div class="ratio ratio-4x3 w-100 mb-3">
+                            <div class="simulator" id="sim4" data-colors="XXXXYXXRXXXXOOOOOOXGXXGGGGGYYYXXYXXYXXXXXXXXRXXXBXXBXX" data-algo="U' L' U L U F U' F'"></div>
+                        </div>
+                        <div class="controls">
+                            <div class="algo-list"></div>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Simulation 5 -->
+            <div class="row align-items-start mb-5">
+                <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
+                    <img src="assets/img/Algs/Algs_01-06.svg" class="cube-thumb" alt="Würfelabbildung 6"/>
+                </div>
+                <div class="col-12 col-md-4"><b>2. Kante muss nach rechts:</b>
+                    <p><b>U R U&apos; R&apos; U&apos; F&apos; U F</b></p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="simulator-wrapper">
+                        <div class="ratio ratio-4x3 w-100 mb-3">
+                            <div class="simulator" id="sim5" data-colors="XXXXYXXOXXXXXOOOOOXGXGGXGGGYYYXXYXXYXXXXXRXXRXXXBXXBXX" data-algo="U R U' R' U' F' U F"></div>
+                        </div>
+                        <div class="controls">
+                            <div class="algo-list"></div>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <p>Wenn du in der oberen Ebene kein passendes Kantenstück ohne Gelb findest, steckt es meist schon in der zweiten Ebene &ndash; aber falsch herum. In dem Fall musst du es mit einem der Standardalgorithmen herausnehmen und anschließend korrekt neu einsetzen. Kanten lassen sich dort nicht einfach drehen, sondern müssen neu platziert werden. Siehst du oben nur noch Kanten mit Gelb, sind entweder alle mittleren Kanten bereits korrekt oder ein falsch eingesetzter Stein verbirgt sich in der zweiten Ebene. Da gelbe Kanten zur obersten Ebene gehören, kannst du sie in diesem Schritt ignorieren. Kontrolliere stattdessen die mittlere Ebene sorgfältig.</p>
+            </div>
+            <!-- Simulation 6 -->
+            <div class="row align-items-start mb-5">
+                <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
+                    <img src="assets/img/Algs/Algs_01-07.svg" class="cube-thumb" alt="Würfelabbildung 7"/>
+                </div>
+                <div class="col-12 col-md-4">
+                    <p>Wenn zwei Kanten bereits korrekt ausgerichtet in der mittleren Ebene sitzen, aber nur noch ihre Positionen vertauscht werden müssen, lässt sich dies direkt mit dem Algorithmus <br><b>F2 U2 F2 U2 F2</b> <br>erledigen. Dieser vertauscht die beiden gegenüberliegenden Kanten der mittleren Ebene, ohne ihre Orientierung zu verändern &ndash; eine elegante Lösung für den seltenen Fall eines isolierten Kantenplatztausches.</p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="simulator-wrapper">
+                        <div class="ratio ratio-4x3 w-100 mb-3">
+                            <div class="simulator" id="sim6" data-colors="XXXXYXXXXXXXROOOOOXXXGGGGGGYYYXXYXXYXXXXXOXXRXXXBXXBXX" data-algo="F2 U2 F2 U2 F2"></div>
+                        </div>
+                        <div class="controls">
+                            <div class="algo-list"></div>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
+                                <i class="bi bi-play-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
+                                <i class="bi bi-skip-forward-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h5>3. Die dritte Ebene lösen (Final Layer)</h5>
+            <p>Die Lösung der dritten Ebene stellt den letzten und entscheidenden Abschnitt der Layer-by-Layer-Methode dar. Voraussetzung dafür ist, dass die weiße Fläche (inklusive aller weißen Ecken) korrekt gelöst ist und sich auf der Unterseite befindet – ebenso wie die vier Kanten der mittleren Ebene, die bereits farblich korrekt zwischen den Mittelsteinen platziert sind. Ab jetzt wird nur noch auf der obersten Ebene gearbeitet, wobei die gelbe Fläche nach oben zeigt. Der bereits gelöste Teil des Würfels bleibt dabei unberührt.</p>
+            <p>Ziel ist es, die oberste Ebene schrittweise zu vervollständigen: Zunächst wird ein gelbes Kreuz gebildet, dann werden die gelben Ecken so gedreht, dass die gesamte obere Fläche gelb ist. Im Anschluss werden die gelben Kanten an ihre richtige Position&nbsp; gebracht, bevor zuletzt auch die Ecken korrekt eingeordnet werden. Damit ist der Würfel vollständig gelöst. Jeder dieser vier Schritte folgt einem klar definierten Muster mit spezifischen Algorithmen, die ausschließlich auf der oberen Ebene wirken und die bereits gelösten Ebenen unangetastet lassen.</p>
+            <h6>3.1 Gelbes Kreuz herstellen (Kanten orientieren)</h6>
+            <!-- Simulation 7 -->
+            <div class="row align-items-start mb-5">
+                <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
+                    <img src="assets/img/Algs/Algs_01-08.svg" class="cube-thumb" alt="Würfelabbildung 8"/>
+                </div>
+                <div class="col-12 col-md-4"><b>1. Gelber Punkt<br></b>
+                    <p>In diesem Schritt werden die vier gelben Kanten so gedreht, dass ihre gelbe Fläche nach oben zeigt &ndash; unabhängig von ihrer Position. Je nach Ausgangsform (Punkt, L-Form oder Linie) wird der Algorithmus <br><b>F R U R&apos; U&apos; F&apos; </b><br>ein- oder mehrmals ausgeführt. Die L-Form zeigt nach links und hinten, die Linie horizontal. Spätestens nach drei Durchgängen entsteht das gelbe Kreuz.</p>
+                    <p></p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="simulator-wrapper">
+                        <div class="ratio ratio-4x3 w-100 mb-3">
+                            <div class="simulator" id="sim7" data-colors="XXXXYXXXXXYXOOOOOOXYXGGGGGGYYYYYYYYYXYXRRRRRRXYXBBBBBB" data-algo="F R U R' U' F'"></div>
+                        </div>
+                        <div class="controls">
+                            <div class="algo-list"></div>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
+                                <i class="bi bi-play-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
+                                <i class="bi bi-skip-forward-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Simulation 8 -->
+            <div class="row align-items-start mb-5">
+                <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
+                    <img src="assets/img/Algs/Algs_01-09.svg" class="cube-thumb" alt="Würfelabbildung 9"/>
+                </div>
+                <div class="col-12 col-md-4">
+                    <p><b>2. Gelbes L<br></b>Das gelbe L wird so ausgerichtet, dass die beiden gelben Kanten oben nach links und nach hinten zeigen &ndash; also wie ein spiegelverkehrtes &bdquo;L&ldquo; in der linken oberen Ecke.<br><b>F R U R&apos; U&apos; F&apos;</b><br></p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="simulator-wrapper">
+                        <div class="ratio ratio-4x3 w-100 mb-3">
+                            <div class="simulator" id="sim8" data-colors="XYXYYXXXXXYXOOOOOOXYXGGGGGGYYYYYYYYYXXXRRRRRRXXXBBBBBB" data-algo="F R U R' U' F'"></div>
+                        </div>
+                        <div class="controls">
+                            <div class="algo-list"></div>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
+                                <i class="bi bi-play-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
+                                <i class="bi bi-skip-forward-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Simulation 9 -->
+            <div class="row align-items-start mb-5">
+                <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
+                    <img src="assets/img/Algs/Algs_01-10.svg" class="cube-thumb" alt="Würfelabbildung 10"/>
+                </div>
+                <div class="col-12 col-md-4">
+                    <p><b>3. Gelbe Linie<br></b>Die gelbe Linie wird so ausgerichtet, dass die beiden gelben Kanten oben horizontal verlaufen &ndash; also eine gelbe Linie von links nach rechts bildet.<br><b>F R U R&apos; U&apos; F&apos;</b><br></p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="simulator-wrapper">
+                        <div class="ratio ratio-4x3 w-100 mb-3">
+                            <div class="simulator" id="sim9" data-colors="XXXYYYXXXXXXOOOOOOXYXGGGGGGYYYYYYYYYXXXRRRRRRXYXBBBBBB" data-algo="F R U R' U' F'"></div>
+                        </div>
+                        <div class="controls">
+                            <div class="algo-list"></div>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
+                                <i class="bi bi-play-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
+                                <i class="bi bi-skip-forward-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h6>3.2 Gelbe Fläche komplettieren (Ecken orientieren)</h6>
+            <!-- Simulation 10 -->
+            <div class="row align-items-start mb-5">
+                <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
+                    <img src="assets/img/Algs/Algs_01-11.svg" class="cube-thumb" alt="Würfelabbildung 11"/>
+                </div>
+                <div class="col-12 col-md-4">
+                    <p>Nach dem gelben Kreuz zeigen die Kanten bereits nach oben, aber die vier Ecken sind meist noch unterschiedlich orientiert. Ziel ist es nun, alle gelben Ecken so zu drehen, dass die gesamte obere Fläche gelb wird. Dabei kann es vorkommen, dass zunächst gar keine, eine oder mehrere Ecken gelb nach oben zeigen. Wenn keine Ecke gelb ist, wird der folgende Algorithmus einfach angewendet &ndash; er erzeugt die typische Fisch-Form (eine gelbe Ecke oben):<br><b>R U R&rsquo; U R U2 R&rsquo;</b><br></p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="simulator-wrapper">
+                        <div class="ratio ratio-4x3 w-100 mb-3">
+                            <div class="simulator" id="sim10" data-colors="XYXYYYXYXYXXOOOOOOXXXGGGGGGYYYYYYYYYXXYRRRRRRYXYBBBBBB" data-algo="R U R' U R U2 R'"></div>
+                        </div>
+                        <div class="controls">
+                            <div class="algo-list"></div>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
+                                <i class="bi bi-play-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
+                                <i class="bi bi-skip-forward-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Simulation 11 -->
+            <div class="row align-items-start mb-5">
+                <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
+                    <img src="assets/img/Algs/Algs_01-12.svg" class="cube-thumb" alt="Würfelabbildung 12"/>
+                </div>
+                <div class="col-12 col-md-4">
+                    <p>Wenn eine Ecke gelb ist, wird diese gelbe Ecke vorne links gehalten und derselbe Algorithmus <br><b>R U R&apos; U R U2 R&apos;</b><br>erneut ausgeführt. Wenn schon zwei oder drei Ecken gelb sind, wird die obere Ebene so gedreht, dass wieder nur eine gelbe Ecke vorne links sichtbar ist &ndash; dann wird der Algorithmus wie gewohnt angewendet.
+Durch gezieltes Ausrichten und wiederholtes Ausführen des Algorithmus entsteht nach wenigen Durchgängen eine vollständig gelbe Oberseite.<br></p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="simulator-wrapper">
+                        <div class="ratio ratio-4x3 w-100 mb-3">
+                            <div class="simulator" id="sim11" data-colors="XYXYYYYYXXXYOOOOOOXXYGGGGGGYYYYYYYYYXXXRRRRRRXXYBBBBBB" data-algo="R U R' U R U2 R'"></div>
+                        </div>
+                        <div class="controls">
+                            <div class="algo-list"></div>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
+                                <i class="bi bi-play-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
+                                <i class="bi bi-skip-forward-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h6>3.3 Mittelsteine der gelben Seite sortieren</h6>
+            <!-- Simulation 12 -->
+            <div class="row align-items-start mb-5">
+                <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
+                    <img src="assets/img/Algs/Algs_01-13.svg" class="cube-thumb" alt="Würfelabbildung 13"/>
+                </div>
+                <div class="col-12 col-md-4">
+                    <p>In diesem Schritt sollen die vier gelben Kanten &ndash; also die Mittelsteine der Seitenflächen &ndash; an ihre korrekte Position gebracht werden. Die gelben Flächen zeigen bereits nach oben, auch die Ecken sind richtig platziert. Ausgangsposition: Nur ein Kantenstein der obersten Ebene stimmt bereits mit der Seitenfarbe überein. Mit dem Algorithmus <br><b>R&apos; U R&apos; U&apos; R&apos; U&apos; R&apos; U R U R2</b><br>werden die Kanten um jeweils eine Position verschoben. Falls danach noch nicht alle Kanten korrekt stehen, wird der Algorithmus einfach erneut ausgeführt.&nbsp;(In der Simulation wird die Algorithmus 2x angewendet)</p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="simulator-wrapper">
+                        <div class="ratio ratio-4x3 w-100 mb-3">
+                            <div class="simulator" id="sim12" data-colors="YYYYYYYYYOBROOOOOORGGGGGGGGWWWWWWWWWBOBRRRRRRGRBBBBBBB" data-algo="R' U R' U' R' U' R' U R U R2 R' U R' U' R' U' R' U R U R2"></div>
+                        </div>
+                        <div class="controls">
+                            <div class="algo-list"></div>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
+                                <i class="bi bi-play-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
+                                <i class="bi bi-skip-forward-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h6>3.4 Gelbe Ecken positionieren (Ecken permutieren)</h6>
+            <!-- Simulation 13 -->
+            <div class="row align-items-start mb-5">
+                <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
+                    <img src="assets/img/Algs/Algs_01-14.svg" class="cube-thumb" alt="Würfelabbildung 14"/>
+                </div>
+                <div class="col-12 col-md-4">
+                    <p>Im letzten Schritt werden nun die gelben Ecken der obersten Ebene an ihre korrekten Positionen gebracht. Dazu wird der Würfel so gehalten, dass die gelbe Fläche nach vorne zeigt und sich eine bereits richtig platzierte Ecke oben links befindet.
+                    Mit dem Algorithmus&nbsp;<b class=""><br>R U&apos; R D2 R&apos; U R D2 R2</b> <br>werden die verbleibenden Ecken zyklisch um eine Position verschoben. Ist der Würfel danach noch nicht vollständig gelöst, wird der Zug einfach wiederholt &ndash; erneut mit einer korrekt platzierten Ecke oben links. (In der Simulation wird die Algorithmus 2x angewendet)</p>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="simulator-wrapper">
+                        <div class="ratio ratio-4x3 w-100 mb-3">
+                            <div class="simulator" id="sim13" data-colors="GGGGGGGGRBRRRRRBRRYYYYYYYYYGBOBBBBBBOOOOOOOORWWWWWWWWW" data-algo="R U' R D2 R' U R D2 R2 R U' R D2 R' U R D2 R2"></div>
+                        </div>
+                        <div class="controls">
+                            <div class="algo-list"></div>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
+                                <i class="bi bi-play-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
+                                <i class="bi bi-skip-forward-fill"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
+                                <i class="bi bi-arrow-counterclockwise"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <!-- Footer -->
+        <footer class="text-center py-4 my-navbar-bg">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-12 col-lg-6 text-center text-lg-start mb-3 mb-lg-0">
+                        <p class="text-muted mb-0">Copyright © GodsNumber.de</p>
+                    </div>
+                    <div class="col-12 col-lg-6 text-center text-lg-end">
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item"><a class="cube-link" href="impressum.html">Impressum Datenschutz</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <!-- Scripts -->
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+        <script src="assets/scripts/algs_01.js"></script>
+    </body>
+</html>

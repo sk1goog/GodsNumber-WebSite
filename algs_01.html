@@ -3,12 +3,12 @@
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
-        <title>Algs 01 – Simulation</title>
-        <meta name="description" content="Interaktive Simulationen von Rubik's Cube Zugfolgen mit Three.js und Bootstrap."/>
-        <meta name="keywords" content="Rubik's Cube, Simulation, Three.js, Bootstrap, Zugfolgen, Algs"/>
+        <title>Algs 01 – Simulation | GodsNumber</title>
+        <meta name="description" content="Schrittweise Anleitung zur Layer-by-Layer-Methode (LBL) zur Lösung des Rubik's Cube mit interaktiven 3D-Simulationen."/>
+        <meta name="keywords" content="Rubik's Cube, Simulation, Three.js, Bootstrap, Zugfolgen, LBL Methode, Cube Lösung, Algs"/>
         <link rel="canonical" href="https://www.godsnumber.de/algs_01.html"/>
-        <meta property="og:title" content="Algs 01 – Simulation"/>
-        <meta property="og:description" content="Interaktive Würfel-Simulationen zur Veranschaulichung von Zugfolgen."/>
+        <meta property="og:title" content="Algs 01 – LBL-Methode visuell erklärt | GodsNumber"/>
+        <meta property="og:description" content="Die Layer-by-Layer-Methode (LBL) zur Lösung des Rubik's Cube Schritt für Schritt mit Animationen erleben."/>
         <meta property="og:image" content="https://www.godsnumber.de/assets/img/Algs/Algs_01-Thumbnail.png"/>
         <!-- Lokales Bootstrap & eigene Styles -->
         <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css"/>
@@ -24,29 +24,69 @@
         <!-- Favicons -->
         <link rel="icon" href="favicon.png" type="image/png"/>
         <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
-        <style>/* Zusatz-Styles für Simulator-Template */.simulator-wrapper { display: flex; flex-direction: column; align-items: center; margin-bottom: 1.5rem; } .simulator { width: 100%; height: 100%; } .simulator canvas { width: 100% !important; height: 100% !important; display: block; } .controls { display: flex; align-items: center; margin-top: 0.5rem; width: 100%; } .controls .algo-list { flex-grow: 1; } .controls .start, .controls .step, .controls .reset { padding: 0.25rem 0.5rem; margin-left: 0.5rem; } .move.next { background-color: #eee; }</style>
+        <!-- Inline Styles für den Simulator -->
+        <style>
+      .simulator-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+      .simulator {
+        width: 100%;
+        height: 100%;
+      }
+      .simulator canvas {
+        width: 100% !important;
+        height: 100% !important;
+        display: block;
+      }
+      .controls {
+        display: flex;
+        align-items: center;
+        margin-top: 0.5rem;
+        width: 100%;
+      }
+      .controls .algo-list {
+        flex-grow: 1;
+      }
+      .controls .start,
+      .controls .step,
+      .controls .reset {
+        padding: 0.25rem 0.5rem;
+        margin-left: 0.5rem;
+      }
+      .move.next {
+        background-color: #eee;
+      }
+    </style>
     </head>
     <body class="flex-column min-vh-100" style="display: flex;">
         <!-- Navbar -->
         <nav class="navbar navbar-expand-md my-navbar-bg mb-0 pb-0">
-            <div class="container-fluid"><a href="index.html"> <img src="assets/img/GodCubeLogo.png" alt="GodCube Logo" style="height:85px; width:85px;" class="pb-0"/> </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navcol-2">
-                    <span class="visually-hidden">Toggle navigation</span>
-                    <span class="navbar-toggler-icon"></span>
+            <div class="container-fluid">
+                <a href="index.html"> <img src="assets/img/GodCubeLogo.png" alt="GodCube Logo" style="height:85px; width:85px;" class="pb-0"/> </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navcol-2"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navcol-2">
                     <ul class="navbar-nav">
-                        <li class="nav-item"><a class="nav-link" href="index.html">Welcome</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Welcome</a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="scripts.html">Scripts</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="scripts.html">Scripts</a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="apps.html">Apps</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="base.html">Base</a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="algs.html">Algs</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="algs.html">Algs</a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="maths.html">Maths</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="links.html">Links</a>
                         </li>
-                        <li class="nav-item"><a class="nav-link" href="about.html">About</a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">About</a>
                         </li>
                     </ul>
                 </div>
@@ -90,14 +130,11 @@
                         <!-- Controls -->
                         <div class="controls">
                             <div class="algo-list"></div>
-                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
-                                <i class="bi bi-play-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
-                                <i class="bi bi-skip-forward-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
-                                <i class="bi bi-arrow-counterclockwise"></i>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
                             </button>
                         </div>
                     </div>
@@ -118,14 +155,11 @@
                         </div>
                         <div class="controls">
                             <div class="algo-list"></div>
-                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
-                                <i class="bi bi-play-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
-                                <i class="bi bi-skip-forward-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
-                                <i class="bi bi-arrow-counterclockwise"></i>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
                             </button>
                         </div>
                     </div>
@@ -146,22 +180,18 @@
                         </div>
                         <div class="controls">
                             <div class="algo-list"></div>
-                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
-                                <i class="bi bi-play-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
-                                <i class="bi bi-skip-forward-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
-                                <i class="bi bi-arrow-counterclockwise"></i>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
             <h5>2. Die zweite Ebene lösen (Second Layer Edges)</h5>
-            <p>In diesem Schritt ist das Ziel, die vier Kantensteine der mittleren Ebene korrekt einzusetzen, sodass sie jeweils zwischen den passenden farbigen Zentren der Seitenflächen liegen und farblich korrekt ausgerichtet sind. Diese Kanten enthalten keine gelbe Farbe, da Gelb der weißen Seite gegenüberliegt und zur obersten Ebene gehört. Voraussetzung ist, dass die gesamte untere Ebene &ndash; also das weiße Kreuz samt den weißen Ecken &ndash; bereits korrekt gelöst ist.
-</p>
+            <p>In diesem Schritt ist das Ziel, die vier Kantensteine der mittleren Ebene korrekt einzusetzen, sodass sie jeweils zwischen den passenden farbigen Zentren der Seitenflächen liegen und farblich korrekt ausgerichtet sind. Diese Kanten enthalten keine gelbe Farbe, da Gelb der weißen Seite gegenüberliegt und zur obersten Ebene gehört. Voraussetzung ist, dass die gesamte untere Ebene &ndash; also das weiße Kreuz samt den weißen Ecken &ndash; bereits korrekt gelöst ist.</p>
             <p>Bevor mit dem Einsetzen der Kanten begonnen wird, wird der Würfel in der Regel einmal auf den Kopf gedreht, sodass sich die weiße Fläche nun unten befindet. Dadurch entspricht die visuelle Orientierung der gewohnten Perspektive vieler Lösungsanleitungen, bei denen die noch ungelösten Ebenen oben sichtbar sind und die gelbe Seite nach oben zeigt. Die Kanten der mittleren Ebene werden nun einzeln aus der obersten Ebene identifiziert und mit bestimmten Algorithmen präzise an ihre Zielpositionen eingesetzt.</p>
             <p>Positioniere den Kantenstein so, dass seine Vorderseite mit der Farbe des Mittelstücks auf derselben Seite übereinstimmt &ndash; zum Beispiel: wenn die Vorderseite grün ist, soll auch die angrenzende Mittelsteinfarbe grün sein. Nun entscheidest du, wohin das Kantenstück muss &ndash; nach links oder nach rechts?<br></p>
             <!-- Simulation 4 -->
@@ -169,8 +199,7 @@
                 <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
                     <img src="assets/img/Algs/Algs_01-05.svg" class="cube-thumb" alt="Würfelabbildung 5"/>
                 </div>
-                <div class="col-12 col-md-4">
-                    <b class="">1. Kante muss nach links:</b>
+                <div class="col-12 col-md-4"><b class="">1. Kante muss nach links:</b>
                     <p class="">U&apos; L&apos; U L U F U&apos; F&apos;<br></p>
                 </div>
                 <div class="col-12 col-md-6">
@@ -180,14 +209,11 @@
                         </div>
                         <div class="controls">
                             <div class="algo-list"></div>
-                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
-                                <i class="bi bi-play-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
-                                <i class="bi bi-skip-forward-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
-                                <i class="bi bi-arrow-counterclockwise"></i>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
                             </button>
                         </div>
                     </div>
@@ -198,8 +224,7 @@
                 <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
                     <img src="assets/img/Algs/Algs_01-06.svg" class="cube-thumb" alt="Würfelabbildung 6"/>
                 </div>
-                <div class="col-12 col-md-4">
-                    <b>2. Kante muss nach rechts:</b>
+                <div class="col-12 col-md-4"><b>2. Kante muss nach rechts:</b>
                     <p><b>U R U&apos; R&apos; U&apos; F&apos; U F</b></p>
                 </div>
                 <div class="col-12 col-md-6">
@@ -209,14 +234,11 @@
                         </div>
                         <div class="controls">
                             <div class="algo-list"></div>
-                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
-                                <i class="bi bi-play-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
-                                <i class="bi bi-skip-forward-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
-                                <i class="bi bi-arrow-counterclockwise"></i>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
                             </button>
                         </div>
                     </div>
@@ -238,11 +260,14 @@
                         </div>
                         <div class="controls">
                             <div class="algo-list"></div>
-                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
+                                <i class="bi bi-play-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
+                                <i class="bi bi-skip-forward-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
+                                <i class="bi bi-arrow-counterclockwise"></i>
                             </button>
                         </div>
                     </div>
@@ -257,8 +282,7 @@
                 <div class="col-12 col-md-2 d-flex justify-content-center align-items-center">
                     <img src="assets/img/Algs/Algs_01-08.svg" class="cube-thumb" alt="Würfelabbildung 8"/>
                 </div>
-                <div class="col-12 col-md-4">
-                    <b>1. Gelber Punkt<br></b>
+                <div class="col-12 col-md-4"><b>1. Gelber Punkt<br></b>
                     <p>In diesem Schritt werden die vier gelben Kanten so gedreht, dass ihre gelbe Fläche nach oben zeigt &ndash; unabhängig von ihrer Position. Je nach Ausgangsform (Punkt, L-Form oder Linie) wird der Algorithmus <br><b>F R U R&apos; U&apos; F&apos; </b><br>ein- oder mehrmals ausgeführt. Die L-Form zeigt nach links und hinten, die Linie horizontal. Spätestens nach drei Durchgängen entsteht das gelbe Kreuz.</p>
                     <p></p>
                 </div>
@@ -269,11 +293,14 @@
                         </div>
                         <div class="controls">
                             <div class="algo-list"></div>
-                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
+                                <i class="bi bi-play-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
+                                <i class="bi bi-skip-forward-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
+                                <i class="bi bi-arrow-counterclockwise"></i>
                             </button>
                         </div>
                     </div>
@@ -294,11 +321,14 @@
                         </div>
                         <div class="controls">
                             <div class="algo-list"></div>
-                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
+                                <i class="bi bi-play-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
+                                <i class="bi bi-skip-forward-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
+                                <i class="bi bi-arrow-counterclockwise"></i>
                             </button>
                         </div>
                     </div>
@@ -319,11 +349,14 @@
                         </div>
                         <div class="controls">
                             <div class="algo-list"></div>
-                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
+                                <i class="bi bi-play-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
+                                <i class="bi bi-skip-forward-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
+                                <i class="bi bi-arrow-counterclockwise"></i>
                             </button>
                         </div>
                     </div>
@@ -345,11 +378,14 @@
                         </div>
                         <div class="controls">
                             <div class="algo-list"></div>
-                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
+                                <i class="bi bi-play-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
+                                <i class="bi bi-skip-forward-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
+                                <i class="bi bi-arrow-counterclockwise"></i>
                             </button>
                         </div>
                     </div>
@@ -371,11 +407,14 @@ Durch gezieltes Ausrichten und wiederholtes Ausführen des Algorithmus entsteht 
                         </div>
                         <div class="controls">
                             <div class="algo-list"></div>
-                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
+                                <i class="bi bi-play-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
+                                <i class="bi bi-skip-forward-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
+                                <i class="bi bi-arrow-counterclockwise"></i>
                             </button>
                         </div>
                     </div>
@@ -397,11 +436,14 @@ Durch gezieltes Ausrichten und wiederholtes Ausführen des Algorithmus entsteht 
                         </div>
                         <div class="controls">
                             <div class="algo-list"></div>
-                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
+                                <i class="bi bi-play-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
+                                <i class="bi bi-skip-forward-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
+                                <i class="bi bi-arrow-counterclockwise"></i>
                             </button>
                         </div>
                     </div>
@@ -424,11 +466,14 @@ Durch gezieltes Ausrichten und wiederholtes Ausführen des Algorithmus entsteht 
                         </div>
                         <div class="controls">
                             <div class="algo-list"></div>
-                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten"><i class="bi bi-play-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary start" aria-label="Animation starten">
+                                <i class="bi bi-play-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt"><i class="bi bi-skip-forward-fill"></i>
+                            <button type="button" class="btn btn-outline-secondary step" aria-label="Einzelschritt">
+                                <i class="bi bi-skip-forward-fill"></i>
                             </button>
-                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen"><i class="bi bi-arrow-counterclockwise"></i>
+                            <button type="button" class="btn btn-outline-secondary reset" aria-label="Zurücksetzen">
+                                <i class="bi bi-arrow-counterclockwise"></i>
                             </button>
                         </div>
                     </div>
@@ -436,16 +481,16 @@ Durch gezieltes Ausrichten und wiederholtes Ausführen des Algorithmus entsteht 
             </div>
         </main>
         <!-- Footer -->
+        <!-- Footer -->
         <footer class="text-center py-4 my-navbar-bg">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-12 col-lg-6 text-center text-lg-start mb-3 mb-lg-0">
-                        <p class="text-muted mb-0">Copyright © GodsNumber.de</p>
+                        <p class="text-muted mb-0">Copyright &copy; GodsNumber.de</p>
                     </div>
                     <div class="col-12 col-lg-6 text-center text-lg-end">
                         <ul class="list-inline mb-0">
-                            <li class="list-inline-item">
-                                <a class="cube-link" href="impressum.html">Impressum Datenschutz</a>
+                            <li class="list-inline-item"><a class="cube-link" href="impressum.html">Impressum Datenschutz</a>
                             </li>
                         </ul>
                     </div>

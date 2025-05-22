@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html data-bs-theme="light" lang="de">
+    <head>
+        <title>Learning Moves – Rubik’s Cube Solver mit Gedächtnis</title>
+        <meta name="description" content="Learning Moves ist ein lernfähiger Cube-Solver, der effektive Zugfolgen speichert und bei neuen Versuchen gezielt wiederverwendet.">
+        <meta name="keywords" content="Learning Moves, Rubik's Cube AI, Python Solver, lernender Algorithmus, God's Number, Rubik's Cube Machine Learning, effizienter Cube-Solver">
+        <link rel="canonical" href="https://www.godsnumber.de/scripts_02.html">
+        <meta property="og:title" content="Learning Moves – Rubik’s Cube Solver mit Gedächtnis">
+        <meta property="og:description" content="Ein intelligenter Ansatz zur Cube-Lösung – mit wachsendem Erfahrungsschatz.">
+        <meta property="og:image" content="https://www.godsnumber.de/assets/img/Scripts/Scripts_02-HistogrammLösungen.png">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/fonts/fontawesome-all.min.css">
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/css/Footer-Multi-Column-icons.css">
+        <link rel="stylesheet" href="assets/css/Simple-accordion-with-state-indicator-button.css">
+        <link rel="stylesheet" href="assets/css/styles.css">
+        <link rel="stylesheet" href="assets/css/textarea.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+        <link rel="icon" href="favicon.png" type="image/png">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    </head>
+    <body class="flex-column min-vh-100" style="display: flex;">
+        <nav class="navbar navbar-expand-md my-navbar-bg mb- mb-0 pb-0">
+            <div class="container-fluid">
+                <a href="index.html"><img src="assets/img/GodCubeLogo.png" style="height: 85px;width: 85px;" class="pb-0"></a>
+                <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-2">
+                    <span class="visually-hidden">Toggle navigation</span>
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navcol-2">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="index.html">Welcome</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="scripts.html">Scripts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="base.html">Base</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="algs.html">Algs</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="maths.html">Links</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="about.html">About</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container flex-fill py-5">
+            <h2>Learning Moves – Rubik’s-Cube-Solver mit Memory-Effekt</h2>
+            <p>Learning Moves ist ein lernfähiges Skript zur Lösung des Rubik’s Cube, das auf einem erweiterten Random-Solve-Ansatz basiert. Es merkt sich Zugfolgen, die den Zustand des Cubes verbessern, und speichert sie positionsbasiert. Bei jeder neuen Iteration prüft das Skript zuerst, ob für die aktuelle Position bereits eine bekannte Verbesserung existiert – und wendet diese direkt an. So entsteht ein wachsendes Repertoire an effektiven Teilstrategien. Mit jeder Runde wird Learning Moves dadurch effizienter und ersetzt zufällige Suche zunehmend durch gezieltes, erfahrungsbasiertes Handeln.</p>
+            <hr>
+            <h2>Skript Beschreibung</h2>
+            <p>Learning Moves ist ein Python-Skript zur iterativen Lösung des Rubik’s Cube, das auf einem explorativen Random-Solve-Ansatz basiert – jedoch mit einem entscheidenden Unterschied: Das Skript ist in der Lage, aus erfolgreichen Zügen zu lernen und dieses Wissen bei späteren Versuchen gezielt anzuwenden. Es kombiniert brute-force-artige Zufallsstrategien mit einem persistenten Gedächtnis, das effektive Zugfolgen speichert und wiederverwendet.</p>
+            <h2>Grundprinzip</h2>
+            <p>Der Lösungsprozess besteht aus drei Phasen, die den klassischen Layer-by-Layer-Ansatz widerspiegeln:<br>- E1: Weißes Kreuz + weiße Ecken (Grundlagen)<br>- E2: Mittelsteine der zweiten Ebene (Kanten)<br>- E3: Gelbe Ebene (komplette Lösung)<br>Für jede Stufe versucht das Skript, eine zufällige Folge gültiger Züge zu finden, die zu einem besseren Zwischenzustand führt. Dabei wird der Fortschritt anhand der korrekt platzierten Steine (Pieces) gemessen. Diese werden präzise durch eine Definition von Farbkombinationen an festen Sticker-Positionen überprüft.</p>
+            <h2>Lernmechanismus</h2>
+            <p>Sobald eine Zugfolge gefunden wird, die den Zustand des Cubes verbessert (z. B. von 4 auf 6 korrekte Steine), wird diese zusammen mit dem Ausgangszustand in einer CSV-Datei gespeichert (Improvements.csv). Dabei gilt:<br> Jede Verbesserung wird nur einmal gespeichert (Duplikatprüfung über Start-Zustand + Zugfolge)<br>Zusätzlich wird ein Bewertungswert gespeichert, basierend auf dem Verhältnis von Verbesserung zu Zuglänge (Effizienzmaß)</p>
+            <p>Bei zukünftigen Durchläufen prüft das Skript für jede neue Ausgangsposition, ob bereits eine gespeicherte Verbesserung existiert. Wenn ja, wird die zugehörige Zugfolge direkt angewendet – ohne erneutes Herumprobieren. Dieser „Memory-Effekt“ führt dazu, dass der Solver über Zeit immer weniger zufällige Versuche braucht und zunehmend gezielter agiert.</p>
+            <h2>Technische Details</h2>
+            <p>Das Skript verteilt die Generierung von Kandidatenzugfolgen auf mehrere CPU-Kerne mithilfe von ProcessPoolExecutor, um die Performance bei der Suche nach Verbesserungen zu steigern. Alle relevanten Parameter wie maximale Iterationen, Zuglängen oder Zielwerte für korrekt platzierte Steine werden aus einer externen CSV-Datei geladen, wodurch sich das Verhalten des Skripts flexibel anpassen lässt. Die erzeugten Zugfolgen berücksichtigen sowohl inverse Züge als auch die potenzielle Beeinträchtigung bereits korrekt platzierter Teile, um destruktive Züge zu minimieren. Vor Beginn der eigentlichen Optimierung kann der Cube optional durch eine definierte Anzahl zufälliger Züge verdreht werden. Während des gesamten Ablaufs wird zudem protokolliert, wie häufig bereits gelernte Zugfolgen erfolgreich wiederverwendet wurden – eine Kennzahl für die Effektivität des Lernprozesses.</p>
+            <h2>Dateistruktur</h2>
+            <p>Improvements.csv: Langzeitgedächtnis für erfolgreiche Zugfolgen<br>Results.csv: Statistiken über jeden Run<br>csv_export-StartPos.csv: Eingabepositionen des Cubes<br>mappings.json: Definition der Permutationswirkung jedes Zugs</p>
+            <hr>
+            <h2>Ergebnisse</h2>
+            <p>Während der verschiedenen Trainingsphasen ließ sich sehr deutlich beobachten, wie Learning Moves durch die Anwendung bereits gelernter Zugfolgen zunehmend effizienter wurde. Verbesserungen wurden schneller erkannt, die Lösungsschritte griffen gezielter – und die durchschnittliche Anzahl an Iterationen bis zum nächsten Fortschritt nahm spürbar ab. In vielen Fällen führten bekannte Zugfolgen bereits unmittelbar zur Zielkonfiguration eines Levels.</p>
+            <p>Statt sofort auf eine vollständige Lösung hinzuarbeiten, wurde das Skript zunächst schrittweise trainiert: Zuerst auf das Erreichen von 12 korrekten Steinen, dann 14, 16, 18 und schließlich 20. Dieses gestufte Lernverfahren erwies sich als sehr effektiv.</p>
+            <p>Ein wesentlicher Faktor für den Erfolg war die Wahl geeigneter Parameter. Manche Konfigurationen führten dazu, dass über Stunden hinweg keinerlei Fortschritt verzeichnet oder neue Zugfolgen gespeichert wurden. Besonders hilfreich war die Erkenntnis, dass sich kürzere, häufigere Abläufe mit weniger Iterationen pro Durchlauf als deutlich produktiver erwiesen haben. In der derzeit besten Parametervariante erreicht das Skript rund 50.000 Durchläufe pro Tag – mit über 1.000 vollständigen Lösungen im bisherigen Verlauf.</p>
+            <p>Learning Moves hat sich damit zu einem System entwickelt, das durch einfaches Wiederverwenden erfolgreicher Zugfolgen zunehmend effizienter arbeitet. Es kombiniert exploratives Verhalten mit einem wachsenden Erfahrungsschatz – und erzielt dabei bereits reproduzierbar gute Resultate. Auch wenn noch nicht alle Potenziale ausgeschöpft sind, zeigt sich bereits, dass dieser Ansatz eine solide Grundlage für weiterführende Optimierungen bietet.</p>
+            <img src="assets/img/Scripts/Scripts_02-HistogrammLösungen.png" width="696" height="1044" style="margin-bottom: 25px;" class="<img src=&quot;statistics_plot.png&quot; class=&quot;img-fluid w-100 mb-4&quot; alt=&quot;Statistik&quot; />">
+            <p>Die Grafik zeigt ziemlich klar, wie sich die Lösungen im Training von Learning Moves auf die Anzahl korrekt platzierter Steine verteilen. Besonders interessant: Etwa 2 % aller Versuche führten zu einer vollständigen Lösung mit 20 korrekten Steinen. Und das, obwohl das Skript in dieser Version noch keinen Mechanismus hatte, um in einer Sackgasse zurückzugehen oder einen Durchlauf frühzeitig abzubrechen. </p>
+            <p>Wenn das Skript z. B. 18 korrekte Positionen erreicht hatte, versuchte es einfach stumpf, den Rest in einem Rutsch zu lösen – mit eher kurzen, zufällig erzeugten Zugfolgen. Dass dabei trotzdem vollständige Lösungen herauskamen, zeigt, wie viel schon allein durch das Wiederverwenden gelernter Zugfolgen erreicht werden kann.</p>
+            <p>In der nächsten Version soll genau an dieser Stelle angesetzt werden: mit intelligenterem Zurückspringen, besseren Kombinationen und einer gezielteren Anwendung von bereits bekannten Teilstrategien. Da ist also noch einiges an Potenzial drin.</p>
+            <p>Auch wenn das Skript in der Lage war, rund 1.000 vollständige Lösungen zu erzeugen, ist beim Blick auf die Zuglängen klar: In Richtung Gottes Zahl – also der minimal möglichen Zuganzahl von 20 im HTM – ist es noch ein weiter Weg. Der Durchschnitt lag bei 92 Zügen, der kürzeste gefundene Lösungsweg bei 55, der längste bei 128. Das zeigt: Die aktuellen Lösungen sind noch stark geprägt von zufälligen und ineffizienten Zugfolgen, auch wenn sie zum Ziel führen. Der Fokus lag bisher auf dem ob, nicht dem wie effizient.&nbsp;</p>
+            <hr>
+            <h2>Ressourcen</h2>
+            <h5><strong>Notwendig für die Skriptausführung</strong></h5>
+            <p>- Skript_02:&nbsp;<em>LearningMoves.py</em><br>- Parameterdatei:&nbsp;<em>parameter_csv-Parameter.csv</em><br>- Mappingdatei der Züge:&nbsp;<em>mappings.json</em><br>- Importdatei mit Startposition:&nbsp;<em>csv_export-StartPos.csv</em></p>
+            <h5><strong>Optional</strong></h5>
+            <p>- Datei mit den gelernten Zügen - wird vom Skript angelegt, wenn nicht vorhanden: <em>Improvements.csv&nbsp;</em><br>- Skript zur Erstellung Startposition:&nbsp;<em>CreateStartPosition.py</em><br>- Testskript zur Verifikation der Lösung:&nbsp;<em>TestMoves.py</em></p>
+            <p>&nbsp;<a class="cube-link" href="https://github.com/sk1goog/02_LearningMoves" target="_blank">Download on Github&nbsp;<i class="fab fa-github"></i></a></p>
+            <hr>
+            <div></div>
+            <div class="row" style="margin-top: 30px;">
+                <div class="col">
+                    <div></div>
+                    <a class="cube-link" href="scripts_01.html">&nbsp; ← Skript 1 Random Solve</a>
+                </div>
+                <div class="col">
+                    <div class="text-end">
+                        <a class="cube-link" href="scripts_03.html">Skript 3&nbsp;Solution Recall →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="text-center py-4 my-navbar-bg">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-12 col-lg-6 text-center text-lg-start mb-3 mb-lg-0">
+                        <p class="text-muted mb-0">Copyright&nbsp;© GodsNumber.de</p>
+                    </div>
+                    <div class="col-12 col-lg-6 text-center text-lg-end">
+                        <ul class="list-inline mb-0">
+                            <li class="list-inline-item">
+                                <a class="cube-link" href="impressum.html">Impressum Datenschutz</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    </body>
+</html>
