@@ -7,7 +7,7 @@
         <link rel="canonical" href="https://www.godsnumber.de/scripts_03.html">
         <meta property="og:title" content="Solution Recall – Zugfolgen kombinieren für bessere Lösungen">
         <meta property="og:description" content="Intelligente Kombination gespeicherter Zugfolgen zur Optimierung des Lösungswegs.">
-        <meta property="og:image" content="https://www.godsnumber.de/assets/img/Scripts/Scripts_03-Lo%CC%88sungen.png">
+        <meta property="og:image" content="https://www.godsnumber.de/assets/img/Scripts/Scripts_03-Loesungen.png">
         <meta property="og:url" content="https://www.godsnumber.de/scripts_03.html">
         <meta property="og:type" content="article">
         <meta property="og:locale" content="de_DE">
@@ -64,7 +64,7 @@
             <p>Allerdings traten in rund 10 % der Runs Fälle auf, in denen trotz unzähliger Iterationen keine Lösung gefunden wurde. Hier offenbarte sich eine Einschränkung der aktuellen Datenbank: Bestimmte Zwischenschritte oder &bdquo;Lücken&ldquo; in den gelernten Zugfolgen fehlen, sodass das Programm rein formal gar nicht mehr in der Lage ist, die optimale Fortsetzung zu wählen. Diese Runs enden erst dann, wenn der Algorithmus erkennt, dass keinerlei Verbesserung mehr möglich ist, und somit kein weiterer Fortschritt erzielt werden kann.</p>
             <p>In statistischer Hinsicht haben sich mit der Entfernung zufälliger Züge die durchschnittliche Zugzahl und der maximale Zugaufwand pro Lösung erhöht, während sich die minimale Zuganzahl leicht verbessert hat. Die Optimierungsziele sind damit weniger aggressiv als zuvor, als noch per Zufallsgenerator alle denkbaren Permutationen getestet wurden. Das Ergebnis ist allerdings robuster: Aus nahezu jeder Ausgangstellung wird schnell eine valide, vollständige Lösung gefunden, selbst wenn sie nicht immer die kürzestmögliche ist.</p>
             <p>Zusammenfassend lässt sich sagen, dass das aktuelle Skript einen zufriedenstellenden Kompromiss bietet. Es liefert in der Mehrzahl der Fälle eine komplette Rubik&rsquo;s-Cube-Lösung, ohne sich in endlosen Iterationen zu verlieren, und nutzt dabei ausschließlich bewährte Zugfolgen. Eine 100 %ige Abdeckung aller möglichen Startstellungen bleibt zwar unerreicht, war aber aufgrund der vorhandenen Zugdatenbank auch nicht zwingend das Ziel. Für die Weiterentwicklung würde es sich empfehlen, gezielt fehlende Sequenzen zu identifizieren und die Datenbank zu ergänzen, bevor man erneut über eine vollständige Abdeckung nachdenkt.</p>
-            <img src="assets/img/Scripts/Scripts_03-Lo%CC%88sungen.png" width="696" height="1044" style="margin-bottom: 25px;" class="img-fluid w-100 mb-4" alt="Statistik">
+            <img src="assets/img/Scripts/Scripts_03-Loesungen.png" width="696" height="1044" style="margin-bottom: 25px;" class="img-fluid w-100 mb-4" alt="Statistik">
             <h2>Ressourcen</h2>
             <h5><strong>Notwendig für die Skriptausführung</strong></h5>
             <p>

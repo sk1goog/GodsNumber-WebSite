@@ -7,7 +7,7 @@
         <link rel="canonical" href="https://www.godsnumber.de/scripts_02.html">
         <meta property="og:title" content="Learning Moves – Rubik’s Cube Solver mit Gedächtnis">
         <meta property="og:description" content="Ein intelligenter Ansatz zur Cube-Lösung – mit wachsendem Erfahrungsschatz.">
-        <meta property="og:image" content="https://www.godsnumber.de/assets/img/Scripts/Scripts_02-HistogrammLösungen.png">
+        <meta property="og:image" content="https://www.godsnumber.de/assets/img/Scripts/Scripts_02-HistogrammLoesungen.png">
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
         <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
@@ -67,7 +67,7 @@
             <p>Statt sofort auf eine vollständige Lösung hinzuarbeiten, wurde das Skript zunächst schrittweise trainiert: Zuerst auf das Erreichen von 12 korrekten Steinen, dann 14, 16, 18 und schließlich 20. Dieses gestufte Lernverfahren erwies sich als sehr effektiv.</p>
             <p>Ein wesentlicher Faktor für den Erfolg war die Wahl geeigneter Parameter. Manche Konfigurationen führten dazu, dass über Stunden hinweg keinerlei Fortschritt verzeichnet oder neue Zugfolgen gespeichert wurden. Besonders hilfreich war die Erkenntnis, dass sich kürzere, häufigere Abläufe mit weniger Iterationen pro Durchlauf als deutlich produktiver erwiesen haben. In der derzeit besten Parametervariante erreicht das Skript rund 50.000 Durchläufe pro Tag – mit über 1.000 vollständigen Lösungen im bisherigen Verlauf.</p>
             <p>Learning Moves hat sich damit zu einem System entwickelt, das durch einfaches Wiederverwenden erfolgreicher Zugfolgen zunehmend effizienter arbeitet. Es kombiniert exploratives Verhalten mit einem wachsenden Erfahrungsschatz – und erzielt dabei bereits reproduzierbar gute Resultate. Auch wenn noch nicht alle Potenziale ausgeschöpft sind, zeigt sich bereits, dass dieser Ansatz eine solide Grundlage für weiterführende Optimierungen bietet.</p>
-            <img src="assets/img/Scripts/Scripts_02-HistogrammLösungen.png" width="696" height="1044" style="margin-bottom: 25px;" class="<img src=&quot;statistics_plot.png&quot; class=&quot;img-fluid w-100 mb-4&quot; alt=&quot;Statistik&quot; />">
+            <img src="assets/img/Scripts/Scripts_02-HistogrammLoesungen.png" width="696" height="1044" style="margin-bottom: 25px;" class="img-fluid w-100 mb-4" alt="Statistik">
             <p>Die Grafik zeigt ziemlich klar, wie sich die Lösungen im Training von Learning Moves auf die Anzahl korrekt platzierter Steine verteilen. Besonders interessant: Etwa 2 % aller Versuche führten zu einer vollständigen Lösung mit 20 korrekten Steinen. Und das, obwohl das Skript in dieser Version noch keinen Mechanismus hatte, um in einer Sackgasse zurückzugehen oder einen Durchlauf frühzeitig abzubrechen. </p>
             <p>Wenn das Skript z. B. 18 korrekte Positionen erreicht hatte, versuchte es einfach stumpf, den Rest in einem Rutsch zu lösen – mit eher kurzen, zufällig erzeugten Zugfolgen. Dass dabei trotzdem vollständige Lösungen herauskamen, zeigt, wie viel schon allein durch das Wiederverwenden gelernter Zugfolgen erreicht werden kann.</p>
             <p>In der nächsten Version soll genau an dieser Stelle angesetzt werden: mit intelligenterem Zurückspringen, besseren Kombinationen und einer gezielteren Anwendung von bereits bekannten Teilstrategien. Da ist also noch einiges an Potenzial drin.</p>

@@ -1,0 +1,6 @@
+# Pinegrow-Automatiksicherungen und Arbeitsdateien
+_pgbackup/
+_pginfo/
+
+# macOS
+.DS_Store
